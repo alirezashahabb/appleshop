@@ -17,7 +17,7 @@ class AuthRemoteDataSorce implements IAuthDataSorce {
   Future<void> register(
       String userName, String password, String confirmPassword) async {
     try {
-      Response response = await dio.post(
+      await dio.post(
         'collections/users/records',
         data: {
           'username': userName,

@@ -149,11 +149,11 @@ class CardItems extends StatelessWidget {
               dashGapColor: Colors.transparent,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 Text('تومان'),
                 Text('50/000/000'),
               ],

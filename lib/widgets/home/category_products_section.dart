@@ -114,9 +114,9 @@ class ProductsItems extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  Column(
+                  const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Text(
                         '11,480,000',
                         style: TextStyle(

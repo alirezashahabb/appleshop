@@ -484,13 +484,12 @@ class ShopDetailScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SliverToBoxAdapter(
+            const SliverToBoxAdapter(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 44),
+                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 44),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [ShopDetails(), AddBasket()],
+                  children: [ShopDetails(), AddBasket()],
                 ),
               ),
             )
@@ -599,8 +598,8 @@ class ShopDetails extends StatelessWidget {
                       'تومان',
                       style: TextStyle(fontFamily: 'Sm', color: Colors.white),
                     ),
-                    Column(
-                      children: const [
+                    const Column(
+                      children: [
                         Text(
                           '۱۷٬۸۰۰٬۰۰۰',
                           style: TextStyle(

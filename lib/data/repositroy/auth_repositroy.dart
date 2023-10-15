@@ -1,8 +1,8 @@
 import 'package:appleshop1/common/Api_exptions.dart';
+import 'package:appleshop1/common/auth_manger.dart';
 import 'package:appleshop1/common/di.dart';
 import 'package:appleshop1/data/datasource/auth_datasoruce.dart';
 import 'package:dartz/dartz.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class IAuthRepositroy {
   Future<Either<String, String>> register(
@@ -33,8 +33,7 @@ class Authrepostiry implements IAuthRepositroy {
     try {
       String token = await _dataSorce.login(userName, password);
       if (token.isNotEmpty) {
-        final SharedPreferences share = locator.get();
-        share.setString('acsess_token', token);
+        AuthManger.saveToken(token);
         return right('شما با موفقیت وارد شدید');
       } else {
         return const Left('خظایی در ورود رخ داده هست');
