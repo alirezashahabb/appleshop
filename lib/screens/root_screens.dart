@@ -1,10 +1,14 @@
 import 'dart:ui';
 
+import 'package:appleshop1/bloc/bloc/category_bloc.dart';
 import 'package:appleshop1/common/color.dart';
 import 'package:appleshop1/screens/category_list_screens.dart';
-import 'package:appleshop1/screens/category_screens.dart';
 import 'package:appleshop1/screens/home_screens.dart';
+import 'package:appleshop1/screens/profile_screens.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'category_screens.dart';
 
 class RootScreens extends StatefulWidget {
   const RootScreens({super.key});
@@ -190,9 +194,16 @@ class _RootScreensState extends State<RootScreens> {
 
   List<Widget> getLayOut() {
     return <Widget>[
-      const HomeScreens(),
-      const CategoryScreens(),
+      const ProfileScreens(),
       const CategoryListScreens(),
+      BlocProvider(
+        create: (context) {
+          var bloc = CategoryBloc();
+          bloc.add(CategoryReqiestEvent());
+          return bloc;
+        },
+        child: const CategoryScreens(),
+      ),
       const HomeScreens()
     ];
   }

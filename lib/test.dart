@@ -1,5 +1,6 @@
 import 'package:appleshop1/common/auth_manger.dart';
 import 'package:appleshop1/data/repositroy/auth_repositroy.dart';
+import 'package:appleshop1/data/repositroy/catrgory_repository.dart';
 import 'package:flutter/material.dart';
 
 class TestScreen extends StatelessWidget {
@@ -14,8 +15,7 @@ class TestScreen extends StatelessWidget {
         children: [
           ElevatedButton(
               onPressed: () async {
-                var either =
-                    await Authrepostiry().login('alirezash', '12345678');
+                await Authrepostiry().login('alirezash', '12345678');
               },
               child: const Text('login')),
           ElevatedButton(
@@ -33,7 +33,18 @@ class TestScreen extends StatelessWidget {
                 return const Text('شما وارد  شده اید');
               }
             },
-          )
+          ),
+          ElevatedButton(
+              onPressed: () async {
+                var repositroy = CategoryProductsRepository();
+                var eitheer = await repositroy.getCategories();
+                eitheer.fold(
+                    (l) => print(l),
+                    (r) => r.forEach((element) {
+                          print(element.images);
+                        }));
+              },
+              child: const Text('getData'))
         ],
       ),
     );

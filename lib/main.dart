@@ -1,7 +1,7 @@
 import 'package:appleshop1/bloc/auth/authbloc_bloc.dart';
 import 'package:appleshop1/common/color.dart';
 import 'package:appleshop1/common/di.dart';
-import 'package:appleshop1/screens/login_screen.dart';
+import 'package:appleshop1/screens/root_screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -29,7 +29,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(scaffoldBackgroundColor: CustomColors.scaffoldColor),
       home: BlocProvider(
         create: (context) => AuthBloc(),
-        child: const LoginScreen(),
+        child: const RootScreens(),
       ),
     );
   }

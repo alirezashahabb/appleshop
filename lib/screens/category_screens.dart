@@ -1,5 +1,9 @@
+import 'package:appleshop1/bloc/bloc/category_bloc.dart';
+import 'package:appleshop1/common/cached_image_network.dart';
 import 'package:appleshop1/common/color.dart';
+import 'package:appleshop1/data/model/category_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CategoryScreens extends StatelessWidget {
   const CategoryScreens({super.key});
@@ -41,23 +45,61 @@ class CategoryScreens extends StatelessWidget {
                 ),
               ),
             ),
-            SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 44),
-              sliver: SliverGrid(
-                delegate:
-                    SliverChildBuilderDelegate((context, index) => Container(
-                          decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(15)),
-                        )),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 20,
-                ),
-              ),
-            )
+            BlocBuilder<CategoryBloc, CategoryState>(
+              builder: (context, state) {
+                if (state is CategoryLoading) {
+                  return const SliverToBoxAdapter(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (state is CategoryResponce) {
+                  return state.response.fold(
+                      (l) => SliverToBoxAdapter(
+                            child: Text(l),
+                          ),
+                      (r) => CategoryList(
+                            listItems: r,
+                          ));
+                } else {
+                  return const SliverToBoxAdapter(
+                    child: Text('state not support'),
+                  );
+                }
+              },
+            ),
+
+            // const CategoryList()
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// this class for category Items
+class CategoryList extends StatelessWidget {
+  final List<CategoryItems> listItems;
+  const CategoryList({
+    super.key,
+    required this.listItems,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(horizontal: 44),
+      sliver: SliverGrid(
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            var items = listItems[index];
+            return CachedImage(imageUrl: items.images);
+          },
+          childCount: listItems.length,
+        ),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 20,
+          crossAxisSpacing: 20,
         ),
       ),
     );
