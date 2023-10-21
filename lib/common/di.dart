@@ -1,6 +1,8 @@
 import 'package:appleshop1/data/datasource/auth_datasoruce.dart';
+import 'package:appleshop1/data/datasource/banner_dataSorce.dart';
 import 'package:appleshop1/data/datasource/catogery_dataSorce.dart';
 import 'package:appleshop1/data/repositroy/auth_repositroy.dart';
+import 'package:appleshop1/data/repositroy/banner_repositroy.dart';
 import 'package:appleshop1/data/repositroy/catrgory_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
@@ -25,10 +27,13 @@ Future<void> getInit() async {
 
   locator.registerFactory<IAuthDataSorce>(() => AuthRemoteDataSorce());
   locator.registerFactory<IcategoryDataSorce>(() => CategoryRemoteDataSorce());
+  locator.registerFactory<IBannerDataSorce>(() => BannerRemoteDataSorce());
 
   ///-----------------------Repositroy handler
 
   locator.registerFactory<IAuthRepositroy>(() => Authrepostiry());
   locator
       .registerFactory<ICategoryRepositroy>(() => CategoryProductsRepository());
+
+  locator.registerFactory<IBannerRepositroy>(() => BannerRepository());
 }

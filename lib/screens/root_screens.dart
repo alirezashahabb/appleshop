@@ -1,6 +1,7 @@
 import 'dart:ui';
 
-import 'package:appleshop1/bloc/bloc/category_bloc.dart';
+import 'package:appleshop1/bloc/category/category_bloc.dart';
+import 'package:appleshop1/bloc/home/home_bloc.dart';
 import 'package:appleshop1/common/color.dart';
 import 'package:appleshop1/screens/category_list_screens.dart';
 import 'package:appleshop1/screens/home_screens.dart';
@@ -204,7 +205,14 @@ class _RootScreensState extends State<RootScreens> {
         },
         child: const CategoryScreens(),
       ),
-      const HomeScreens()
+      BlocProvider(
+        create: (context) {
+          var bloc = HomeBloc();
+          bloc.add(HomeInitEvent());
+          return bloc;
+        },
+        child: const HomeScreens(),
+      )
     ];
   }
 }

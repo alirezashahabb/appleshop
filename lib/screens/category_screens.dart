@@ -1,4 +1,4 @@
-import 'package:appleshop1/bloc/bloc/category_bloc.dart';
+import 'package:appleshop1/bloc/category/category_bloc.dart';
 import 'package:appleshop1/common/cached_image_network.dart';
 import 'package:appleshop1/common/color.dart';
 import 'package:appleshop1/data/model/category_model.dart';

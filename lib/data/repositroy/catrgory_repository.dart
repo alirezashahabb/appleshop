@@ -17,7 +17,7 @@ class CategoryProductsRepository implements ICategoryRepositroy {
       var responce = await dataSorce.getCategories();
       return Right(responce);
     } on ApiExptions catch (e) {
-      return Left(e.message ?? 'خطا محتوا متنی ندارد');
+      return Left(e.message ?? 'خطا نا مشخص');
     }
   }
 }
