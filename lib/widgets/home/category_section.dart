@@ -1,9 +1,13 @@
+import 'package:appleshop1/common/cached_image_network.dart';
+import 'package:appleshop1/data/model/category_model.dart';
 import 'package:flutter/material.dart';
 
 /// this class for Category
 class CategoryList extends StatelessWidget {
+  final List<CategoryItems> categoryList;
   const CategoryList({
     super.key,
+    required this.categoryList,
   });
 
   @override
@@ -11,13 +15,13 @@ class CategoryList extends StatelessWidget {
     return SizedBox(
       height: 90,
       child: ListView.builder(
-        itemCount: 10,
+        itemCount: categoryList.length,
         padding: const EdgeInsets.only(right: 20),
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          return const Padding(
-            padding: EdgeInsets.only(right: 20),
-            child: HorizantelItemList(),
+          return Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: HorizantelItemList(categories: categoryList[index]),
           );
         },
       ),
@@ -25,45 +29,54 @@ class CategoryList extends StatelessWidget {
   }
 }
 
-/// this class for items Category
+/// this class for i tems Category
 class HorizantelItemList extends StatelessWidget {
+  final CategoryItems categories;
   const HorizantelItemList({
     super.key,
+    required this.categories,
   });
 
   @override
   Widget build(BuildContext context) {
+    String categoryColor = 'ff${categories.color}';
+    int hexColor = int.parse(categoryColor, radix: 16);
     return Column(
       children: [
         Container(
           width: 56,
           height: 56,
           decoration: ShapeDecoration(
-            shadows: const [
+            shadows: [
               BoxShadow(
                 spreadRadius: -11,
-                color: Colors.red,
+                color: Color(hexColor),
                 blurRadius: 30,
-                offset: Offset(0, 13),
+                offset: const Offset(0, 13),
               ),
             ],
-            color: Colors.red,
+            color: Color(hexColor),
             shape: ContinuousRectangleBorder(
               borderRadius: BorderRadius.circular(40),
             ),
           ),
-          child: const Icon(
-            Icons.mouse,
-            color: Colors.white,
-            size: 30,
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: SizedBox(
+              height: 24,
+              width: 24,
+              child: CachedImage(
+                imageUrl: categories.icone,
+              ),
+            ),
           ),
         ),
         const SizedBox(
           height: 8,
         ),
-        const Text(
-          'همه',
-          style: TextStyle(
+        Text(
+          categories.title,
+          style: const TextStyle(
             fontFamily: 'Sb',
             fontSize: 12,
           ),

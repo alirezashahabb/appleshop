@@ -1,6 +1,7 @@
 import 'package:appleshop1/bloc/home/home_bloc.dart';
 import 'package:appleshop1/common/color.dart';
 import 'package:appleshop1/data/model/banner_model.dart';
+import 'package:appleshop1/data/model/category_model.dart';
 import 'package:appleshop1/widgets/home/category_products_section.dart';
 import 'package:appleshop1/widgets/home/category_section.dart';
 import 'package:appleshop1/widgets/home/slider_baneer.dart';
@@ -12,36 +13,47 @@ class HomeScreens extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) {
-        return CustomScrollView(
-          slivers: [
-            if (state is HomeLoadingstate) ...[
-              const SliverToBoxAdapter(
-                child: Center(
-                  child: CircularProgressIndicator(),
+    return Scaffold(
+        body: Directionality(
+      textDirection: TextDirection.rtl,
+      child: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
+          return CustomScrollView(
+            slivers: [
+              if (state is HomeLoadingstate) ...[
+                const SliverToBoxAdapter(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              ],
+              const _GetSearchBox(),
+              if (state is HomeResponceState) ...[
+                state.banners.fold(
+                  (l) => SliverToBoxAdapter(
+                    child: Text(l),
+                  ),
+                  (r) => _GetBannerList(r),
                 ),
-              )
-            ],
-            const _GetSearchBox(),
-            if (state is HomeResponceState) ...[
-              state.banners.fold(
-                (l) => SliverToBoxAdapter(
-                  child: Text(l),
+              ],
+              const _GetCategoryTitle(),
+              if (state is HomeResponceState) ...[
+                state.categories.fold(
+                  (error) => SliverToBoxAdapter(
+                    child: Text(error),
+                  ),
+                  (responce) => _GetCategoryList(responce),
                 ),
-                (r) => _GetBannerList(r),
-              ),
+              ],
+              const _GetBestSellerTitle(),
+              const _GetBeatSellers(),
+              const _GetMostViewTitle(),
+              const _GetMostView(),
+              const SliverPadding(padding: EdgeInsets.only(bottom: 20))
             ],
-            const _GetCategoryTitle(),
-            const _GetCategoryList(),
-            const _GetBestSellerTitle(),
-            const _GetBeatSellers(),
-            const _GetMostViewTitle(),
-            const _GetMostView(),
-            const SliverPadding(padding: EdgeInsets.only(bottom: 20))
-          ],
-        );
-      },
+          );
+        },
+      ),
     ));
   }
 }
@@ -67,19 +79,6 @@ class _GetMostViewTitle extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(44, 32, 44, 20),
         child: Row(
           children: [
-            Image.asset('assets/images/icon_left_categroy.png'),
-            const SizedBox(
-              width: 8,
-            ),
-            const Text(
-              'مشاهده همه',
-              style: TextStyle(
-                fontFamily: 'Sm',
-                color: CustomColors.mainColor,
-                fontSize: 11,
-              ),
-            ),
-            const Spacer(),
             const Text(
               'پر بازدید ترین ها',
               style: TextStyle(
@@ -88,6 +87,19 @@ class _GetMostViewTitle extends StatelessWidget {
                 fontSize: 11,
               ),
             ),
+            const Spacer(),
+            const Text(
+              'مشاهده همه',
+              style: TextStyle(
+                fontFamily: 'Sm',
+                color: CustomColors.mainColor,
+                fontSize: 11,
+              ),
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+            Image.asset('assets/images/icon_left_categroy.png'),
           ],
         ),
       ),
@@ -116,19 +128,6 @@ class _GetBestSellerTitle extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(44, 20, 44, 20),
         child: Row(
           children: [
-            Image.asset('assets/images/icon_left_categroy.png'),
-            const SizedBox(
-              width: 8,
-            ),
-            const Text(
-              'مشاهده همه',
-              style: TextStyle(
-                fontFamily: 'Sm',
-                color: CustomColors.mainColor,
-                fontSize: 11,
-              ),
-            ),
-            const Spacer(),
             const Text(
               'پر فروش ترین ها',
               style: TextStyle(
@@ -137,6 +136,19 @@ class _GetBestSellerTitle extends StatelessWidget {
                 fontSize: 11,
               ),
             ),
+            const Spacer(),
+            const Text(
+              'مشاهده همه',
+              style: TextStyle(
+                fontFamily: 'Sm',
+                color: CustomColors.mainColor,
+                fontSize: 11,
+              ),
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+            Image.asset('assets/images/icon_left_categroy.png'),
           ],
         ),
       ),
@@ -145,12 +157,13 @@ class _GetBestSellerTitle extends StatelessWidget {
 }
 
 class _GetCategoryList extends StatelessWidget {
-  const _GetCategoryList();
+  final List<CategoryItems> categories;
+  const _GetCategoryList(this.categories);
 
   @override
   Widget build(BuildContext context) {
-    return const SliverToBoxAdapter(
-      child: CategoryList(),
+    return SliverToBoxAdapter(
+      child: CategoryList(categoryList: categories),
     );
   }
 }
@@ -208,7 +221,10 @@ class _GetSearchBox extends StatelessWidget {
             const SizedBox(
               width: 16,
             ),
-            Image.asset('assets/images/icon_apple_blue.png'),
+            Image.asset('assets/images/icon_search.png'),
+            const SizedBox(
+              width: 16,
+            ),
             const Expanded(
               child: Text(
                 'جستجو محصولات',
@@ -220,10 +236,7 @@ class _GetSearchBox extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(
-              width: 16,
-            ),
-            Image.asset('assets/images/icon_search.png'),
+            Image.asset('assets/images/icon_apple_blue.png'),
             const SizedBox(
               width: 16,
             ),

@@ -13,6 +13,7 @@ class HomeLoadingstate extends HomeState {}
 
 class HomeResponceState extends HomeState {
   final Either<String, List<BannerProducts>> banners;
+  final Either<String, List<CategoryItems>> categories;
 
-  const HomeResponceState(this.banners);
+  const HomeResponceState(this.banners, this.categories);
 }

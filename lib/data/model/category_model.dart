@@ -16,7 +16,7 @@ class CategoryItems {
       'http://startflutter.ir/api/files/${jsonMap['collectionId']}/${jsonMap['id']}/${jsonMap['thumbnail']}',
       jsonMap['title'],
       jsonMap['color'],
-      jsonMap['icon'],
+      'http://startflutter.ir/api/files/${jsonMap['collectionId']}/${jsonMap['id']}/${jsonMap['icon']}',
     );
   }
 }

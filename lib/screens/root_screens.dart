@@ -19,7 +19,7 @@ class RootScreens extends StatefulWidget {
 }
 
 class _RootScreensState extends State<RootScreens> {
-  int selectedIndex = 0;
+  int selectedIndex = 3;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
