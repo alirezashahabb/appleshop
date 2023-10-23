@@ -1,10 +1,14 @@
+import 'package:appleshop1/common/cached_image_network.dart';
 import 'package:appleshop1/common/color.dart';
+import 'package:appleshop1/data/model/producs_model.dart';
 import 'package:flutter/material.dart';
 
 /// this class for Category Products
 class CategoryProducts extends StatelessWidget {
+  final List<ProdcutsList> productsList;
   const CategoryProducts({
     super.key,
+    required this.productsList,
   });
 
   @override
@@ -12,11 +16,13 @@ class CategoryProducts extends StatelessWidget {
     return SizedBox(
       height: 218,
       child: ListView.builder(
-        itemCount: 10,
+        itemCount: productsList.length,
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.only(right: 20),
         itemBuilder: (context, index) {
-          return const ProductsItems();
+          return ProductsItems(
+            products: productsList[index],
+          );
         },
       ),
     );
@@ -25,8 +31,10 @@ class CategoryProducts extends StatelessWidget {
 
 /// this Class for Products Items
 class ProductsItems extends StatelessWidget {
+  final ProdcutsList products;
   const ProductsItems({
     super.key,
+    required this.products,
   });
 
   @override
@@ -41,7 +49,7 @@ class ProductsItems extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Stack(
               alignment: Alignment.center,
@@ -49,7 +57,10 @@ class ProductsItems extends StatelessWidget {
                 Expanded(
                   child: Container(),
                 ),
-                Image.asset('assets/images/iphone.png'),
+                SizedBox(
+                    height: 96,
+                    width: 100,
+                    child: CachedImage(imageUrl: products.thumnail)),
                 Positioned(
                   top: 10,
                   right: 10,
@@ -63,11 +74,12 @@ class ProductsItems extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                       color: CustomColors.primaryColor,
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 2, horizontal: 5),
                       child: Text(
-                        '3%',
-                        style: TextStyle(
+                        '${products.percent!.round().toString()}%',
+                        style: const TextStyle(
                           fontFamily: 'Sm',
                           color: Colors.white,
                           fontSize: 11,
@@ -79,11 +91,12 @@ class ProductsItems extends StatelessWidget {
               ],
             ),
             const Spacer(),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Text(
-                'ایفون 14 پرو مکس',
-                style: TextStyle(fontFamily: 'Sm'),
+                products.name,
+                maxLines: 1,
+                style: const TextStyle(fontFamily: 'Sm'),
               ),
             ),
             const Spacer(),
@@ -114,12 +127,12 @@ class ProductsItems extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  const Column(
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '11,480,000',
-                        style: TextStyle(
+                        products.price.toString(),
+                        style: const TextStyle(
                           decoration: TextDecoration.lineThrough,
                           fontFamily: 'Sm',
                           fontSize: 10,
@@ -127,8 +140,8 @@ class ProductsItems extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '11,400,000',
-                        style: TextStyle(
+                        products.realPrice.toString(),
+                        style: const TextStyle(
                           fontFamily: 'Sm',
                           fontSize: 14,
                           color: Colors.white,

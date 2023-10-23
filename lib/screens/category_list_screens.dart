@@ -1,5 +1,4 @@
 import 'package:appleshop1/common/color.dart';
-import 'package:appleshop1/widgets/home/category_products_section.dart';
 import 'package:flutter/material.dart';
 
 class CategoryListScreens extends StatelessWidget {
@@ -46,7 +45,7 @@ class CategoryListScreens extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 44),
               sliver: SliverGrid(
                 delegate: SliverChildBuilderDelegate(
-                    (context, index) => const ProductsItems()),
+                    (context, index) => const Text('sdsdsdws')),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   childAspectRatio: 2 / 2.6,

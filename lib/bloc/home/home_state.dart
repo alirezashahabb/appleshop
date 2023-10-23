@@ -14,6 +14,7 @@ class HomeLoadingstate extends HomeState {}
 class HomeResponceState extends HomeState {
   final Either<String, List<BannerProducts>> banners;
   final Either<String, List<CategoryItems>> categories;
+  final Either<String, List<ProdcutsList>> products;
 
-  const HomeResponceState(this.banners, this.categories);
+  const HomeResponceState(this.banners, this.categories, this.products);
 }

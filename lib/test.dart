@@ -1,6 +1,6 @@
 import 'package:appleshop1/common/auth_manger.dart';
 import 'package:appleshop1/data/repositroy/auth_repositroy.dart';
-import 'package:appleshop1/data/repositroy/banner_repositroy.dart';
+import 'package:appleshop1/data/repositroy/products_repository.dart';
 import 'package:flutter/material.dart';
 
 class TestScreen extends StatelessWidget {
@@ -36,12 +36,12 @@ class TestScreen extends StatelessWidget {
           ),
           ElevatedButton(
               onPressed: () async {
-                var repositroy = BannerRepository();
-                var eitheer = await repositroy.getBanner();
+                var repositroy = ProdcutsRepository();
+                var eitheer = await repositroy.getproducts();
                 eitheer.fold(
                     (l) => print(l),
                     (r) => r.forEach((element) {
-                          print(element.image);
+                          print(element.name);
                         }));
               },
               child: const Text('getData'))

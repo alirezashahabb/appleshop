@@ -2,6 +2,7 @@ import 'package:appleshop1/bloc/home/home_bloc.dart';
 import 'package:appleshop1/common/color.dart';
 import 'package:appleshop1/data/model/banner_model.dart';
 import 'package:appleshop1/data/model/category_model.dart';
+import 'package:appleshop1/data/model/producs_model.dart';
 import 'package:appleshop1/widgets/home/category_products_section.dart';
 import 'package:appleshop1/widgets/home/category_section.dart';
 import 'package:appleshop1/widgets/home/slider_baneer.dart';
@@ -46,9 +47,16 @@ class HomeScreens extends StatelessWidget {
                 ),
               ],
               const _GetBestSellerTitle(),
-              const _GetBeatSellers(),
+              if (state is HomeResponceState) ...[
+                state.products.fold(
+                  (error) => SliverToBoxAdapter(
+                    child: Text(error),
+                  ),
+                  (r) => _GetBeatSellers(r),
+                ),
+              ],
               const _GetMostViewTitle(),
-              const _GetMostView(),
+              // const _GetMostView(),
               const SliverPadding(padding: EdgeInsets.only(bottom: 20))
             ],
           );
@@ -58,16 +66,16 @@ class HomeScreens extends StatelessWidget {
   }
 }
 
-class _GetMostView extends StatelessWidget {
-  const _GetMostView();
+// class _GetMostView extends StatelessWidget {
+//   const _GetMostView();
 
-  @override
-  Widget build(BuildContext context) {
-    return const SliverToBoxAdapter(
-      child: CategoryProducts(),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return const SliverToBoxAdapter(
+//       child: CategoryProducts(),
+//     );
+//   }
+// }
 
 class _GetMostViewTitle extends StatelessWidget {
   const _GetMostViewTitle();
@@ -108,12 +116,13 @@ class _GetMostViewTitle extends StatelessWidget {
 }
 
 class _GetBeatSellers extends StatelessWidget {
-  const _GetBeatSellers();
+  final List<ProdcutsList> productsList;
+  const _GetBeatSellers(this.productsList);
 
   @override
   Widget build(BuildContext context) {
-    return const SliverToBoxAdapter(
-      child: CategoryProducts(),
+    return SliverToBoxAdapter(
+      child: CategoryProducts(productsList: productsList),
     );
   }
 }
