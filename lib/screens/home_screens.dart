@@ -48,14 +48,22 @@ class HomeScreens extends StatelessWidget {
               ],
               const _GetBestSellerTitle(),
               if (state is HomeResponceState) ...[
-                state.products.fold(
+                state.bestSllers.fold(
                   (error) => SliverToBoxAdapter(
                     child: Text(error),
                   ),
-                  (r) => _GetBeatSellers(r),
+                  (r) => GetAllProducts(r),
                 ),
               ],
               const _GetMostViewTitle(),
+              if (state is HomeResponceState) ...[
+                state.hotest.fold(
+                  (error) => SliverToBoxAdapter(
+                    child: Text(error),
+                  ),
+                  (r) => GetAllProducts(r),
+                ),
+              ],
               // const _GetMostView(),
               const SliverPadding(padding: EdgeInsets.only(bottom: 20))
             ],
@@ -115,9 +123,9 @@ class _GetMostViewTitle extends StatelessWidget {
   }
 }
 
-class _GetBeatSellers extends StatelessWidget {
+class GetAllProducts extends StatelessWidget {
   final List<ProdcutsList> productsList;
-  const _GetBeatSellers(this.productsList);
+  const GetAllProducts(this.productsList, {super.key});
 
   @override
   Widget build(BuildContext context) {

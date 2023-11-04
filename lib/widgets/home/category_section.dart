@@ -60,13 +60,15 @@ class HorizantelItemList extends StatelessWidget {
               borderRadius: BorderRadius.circular(40),
             ),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: SizedBox(
-              height: 24,
-              width: 24,
-              child: CachedImage(
-                imageUrl: categories.icone,
+          child: SizedBox(
+            height: 24,
+            width: 24,
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Center(
+                child: CachedImage(
+                  imageUrl: categories.icone,
+                ),
               ),
             ),
           ),
