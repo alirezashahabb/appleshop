@@ -37,11 +37,11 @@ class TestScreen extends StatelessWidget {
           ElevatedButton(
               onPressed: () async {
                 var repositroy = ProdcutDetailRepository();
-                var eitheer = await repositroy.getProducGallery();
+                var eitheer = await repositroy.getprodctVaraint();
                 eitheer.fold(
                     (l) => print(l),
                     (r) => r.forEach((element) {
-                          print(element.imgeUrl);
+                          print(element.variantType.title);
                         }));
               },
               child: const Text('getData'))

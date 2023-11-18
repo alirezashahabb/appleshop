@@ -12,9 +12,8 @@ class ProductInitial extends ProductState {}
 class ProductLoadingState extends ProductState {}
 
 class ProductResponseState extends ProductState {
-   final Either<String, List<ProductGallery>> galleryList;
+  final Either<String, List<ProductGallery>> galleryList;
+  final Either<String, List<ProdductVaraint>> varint;
 
-  const ProductResponseState(this.galleryList);
+  const ProductResponseState(this.galleryList, this.varint);
 }
-
-
