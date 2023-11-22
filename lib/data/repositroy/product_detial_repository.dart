@@ -12,8 +12,9 @@ abstract class IProductDetailRepositroy {
   Future<Either<String, List<ProductGallery>>> getProducGallery(
       String productId);
   Future<Either<String, List<VariantType>>> getVaraintType();
-  Future<Either<String, List<Varaints>>> getVaraints();
-  Future<Either<String, List<ProdductVaraint>>> getprodctVaraint();
+  Future<Either<String, List<Varaints>>> getVaraints(String productId);
+  Future<Either<String, List<ProdductVaraint>>> getprodctVaraint(
+      String productId);
   Future<Either<String, CategoryItems>> getCatgories(String categoryId);
 }
 
@@ -42,9 +43,9 @@ class ProdcutDetailRepository extends IProductDetailRepositroy {
   }
 
   @override
-  Future<Either<String, List<Varaints>>> getVaraints() async {
+  Future<Either<String, List<Varaints>>> getVaraints(String productId) async {
     try {
-      var responce = await _dataSorce.varaintProducts();
+      var responce = await _dataSorce.varaintProducts(productId);
       return Right(responce);
     } on ApiExptions catch (e) {
       return Left(e.message ?? 'خطا نا مشخص');
@@ -52,9 +53,10 @@ class ProdcutDetailRepository extends IProductDetailRepositroy {
   }
 
   @override
-  Future<Either<String, List<ProdductVaraint>>> getprodctVaraint() async {
+  Future<Either<String, List<ProdductVaraint>>> getprodctVaraint(
+      String productId) async {
     try {
-      var responce = await _dataSorce.getproductVaraint();
+      var responce = await _dataSorce.getproductVaraint(productId);
       return Right(responce);
     } on ApiExptions catch (e) {
       return Left(e.message ?? 'خطا نا مشخص');

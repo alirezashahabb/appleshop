@@ -19,7 +19,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         emit(ProductLoadingState());
         final gallery =
             await _detailRepositroy.getProducGallery(event.prodocutId);
-        final prodctVaraints = await _detailRepositroy.getprodctVaraint();
+        final prodctVaraints =
+            await _detailRepositroy.getprodctVaraint(event.prodocutId);
         final categories =
             await _detailRepositroy.getCatgories(event.categoryId);
         emit(ProductResponseState(gallery, prodctVaraints, categories));

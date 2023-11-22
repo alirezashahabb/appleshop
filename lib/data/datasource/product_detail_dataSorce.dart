@@ -10,8 +10,8 @@ import 'package:dio/dio.dart';
 abstract class IProductDetialDataSorce {
   Future<List<ProductGallery>> getGaller(String productId);
   Future<List<VariantType>> varaintType();
-  Future<List<Varaints>> varaintProducts();
-  Future<List<ProdductVaraint>> getproductVaraint();
+  Future<List<Varaints>> varaintProducts(String productId);
+  Future<List<ProdductVaraint>> getproductVaraint(String productId);
   Future<CategoryItems> getCategories(String categoryId);
 }
 
@@ -56,8 +56,8 @@ class ProducDetailRemoteDataSorce extends IProductDetialDataSorce {
   }
 
   @override
-  Future<List<Varaints>> varaintProducts() async {
-    Map<String, String> qprams = {'filter': 'product_id="0tc0e5ju89x5ogj"'};
+  Future<List<Varaints>> varaintProducts(String productId) async {
+    Map<String, String> qprams = {'filter': 'product_id="$productId"'};
     try {
       Response response = await dio.get(
         'collections/variants/records',
@@ -77,9 +77,9 @@ class ProducDetailRemoteDataSorce extends IProductDetialDataSorce {
   }
 
   @override
-  Future<List<ProdductVaraint>> getproductVaraint() async {
+  Future<List<ProdductVaraint>> getproductVaraint(String productId) async {
     var varinatTypeList = await varaintType();
-    var varintList = await varaintProducts();
+    var varintList = await varaintProducts(productId);
 
     List<ProdductVaraint> productVarintList = [];
 
