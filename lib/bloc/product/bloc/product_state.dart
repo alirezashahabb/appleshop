@@ -14,6 +14,7 @@ class ProductLoadingState extends ProductState {}
 class ProductResponseState extends ProductState {
   final Either<String, List<ProductGallery>> galleryList;
   final Either<String, List<ProdductVaraint>> varint;
+  final Either<String, CategoryItems> categories;
 
-  const ProductResponseState(this.galleryList, this.varint);
+  const ProductResponseState(this.galleryList, this.varint, this.categories);
 }

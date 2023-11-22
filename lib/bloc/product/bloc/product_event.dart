@@ -7,4 +7,9 @@ class ProductEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class ProductInitEvent extends ProductEvent {}
+class ProductInitEvent extends ProductEvent {
+  final String prodocutId;
+  final String categoryId;
+
+  const ProductInitEvent(this.prodocutId, this.categoryId);
+}

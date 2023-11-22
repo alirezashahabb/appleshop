@@ -5,12 +5,19 @@ import 'package:appleshop1/common/cached_image_network.dart';
 import 'package:appleshop1/common/color.dart';
 import 'package:appleshop1/data/model/gallery.dart';
 import 'package:appleshop1/data/model/product_varaint.dart';
+import 'package:appleshop1/data/model/variant_type.dart';
 import 'package:appleshop1/data/model/varint.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../data/model/producs_model.dart';
+
 class ProductDetailScreen extends StatelessWidget {
-  const ProductDetailScreen({super.key});
+  final ProdcutsList products;
+  const ProductDetailScreen({
+    super.key,
+    required this.products,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +34,62 @@ class ProductDetailScreen extends StatelessWidget {
                     ),
                   ),
                 ],
-                const GetTtitle(),
-                const SliverToBoxAdapter(
+                if (state is ProductResponseState) ...{
+                  SliverToBoxAdapter(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 20),
+                      height: 46,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: 16,
+                          ),
+                          Image.asset('assets/images/icon_apple_blue.png'),
+                          Expanded(
+                              child: state.categories.fold((error) {
+                            return const Text(
+                              'دسته بندی',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: 'Sb',
+                                color: CustomColors.mainColor,
+                                fontSize: 16,
+                              ),
+                            );
+                          }, (categoryName) {
+                            return Text(
+                              categoryName.title,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontFamily: 'Sb',
+                                color: CustomColors.mainColor,
+                                fontSize: 16,
+                              ),
+                            );
+                          })),
+                          Image.asset('assets/images/icon_back.png'),
+                          const SizedBox(
+                            width: 16,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                },
+
+                SliverToBoxAdapter(
                   child: Padding(
-                    padding: EdgeInsets.only(bottom: 20),
+                    padding: const EdgeInsets.only(bottom: 20),
                     child: Text(
-                      'آیفون13 پرو مکس',
+                      products.name,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontFamily: 'Sb',
                       ),
                     ),
@@ -48,6 +103,7 @@ class ProductDetailScreen extends StatelessWidget {
                     );
                   }, (galleyList) {
                     return GetGalley(
+                      thumbnailImage: products.thumnail,
                       galleyProducts: galleyList,
                     );
                   })
@@ -60,104 +116,11 @@ class ProductDetailScreen extends StatelessWidget {
                         child: Text(l),
                       );
                     },
-                    (productVaraintList) =>
-                        ContinerVaraint(productList: productVaraintList),
+                    (productVaraintList) => VaraintContinerGenerator(
+                        productList: productVaraintList),
                   )
                 },
 
-                // //==================================================================Choos Varidant
-                // SliverToBoxAdapter(
-                //   child: Padding(
-                //     padding:
-                //         const EdgeInsets.symmetric(horizontal: 44, vertical: 5),
-                //     child: Column(
-                //       crossAxisAlignment: CrossAxisAlignment.end,
-                //       children: [
-                //         const Text(
-                //           'انتخاب حافظه داخلی',
-                //           style: TextStyle(
-                //             fontFamily: 'Sb',
-                //             fontSize: 12,
-                //           ),
-                //         ),
-                //         const SizedBox(
-                //           height: 10,
-                //         ),
-                //         Row(
-                //           mainAxisAlignment: MainAxisAlignment.end,
-                //           children: [
-                //             Container(
-                //               alignment: Alignment.center,
-                //               width: 74,
-                //               height: 26,
-                //               decoration: BoxDecoration(
-                //                 border: Border.all(
-                //                   width: 1,
-                //                   color: CustomColors.mainTextcolor,
-                //                 ),
-                //                 color: Colors.white,
-                //                 borderRadius: BorderRadius.circular(8),
-                //               ),
-                //               child: const Text(
-                //                 '128',
-                //                 style: TextStyle(
-                //                   fontFamily: 'Sb',
-                //                   fontSize: 12,
-                //                 ),
-                //               ),
-                //             ),
-                //             const SizedBox(
-                //               width: 8,
-                //             ),
-                //             Container(
-                //               alignment: Alignment.center,
-                //               width: 74,
-                //               height: 26,
-                //               decoration: BoxDecoration(
-                //                 border: Border.all(
-                //                   width: 1,
-                //                   color: CustomColors.mainTextcolor,
-                //                 ),
-                //                 color: Colors.white,
-                //                 borderRadius: BorderRadius.circular(8),
-                //               ),
-                //               child: const Text(
-                //                 '128',
-                //                 style: TextStyle(
-                //                   fontFamily: 'Sb',
-                //                   fontSize: 12,
-                //                 ),
-                //               ),
-                //             ),
-                //             const SizedBox(
-                //               width: 8,
-                //             ),
-                //             Container(
-                //               alignment: Alignment.center,
-                //               width: 74,
-                //               height: 26,
-                //               decoration: BoxDecoration(
-                //                 border: Border.all(
-                //                   width: 1,
-                //                   color: CustomColors.mainTextcolor,
-                //                 ),
-                //                 color: Colors.white,
-                //                 borderRadius: BorderRadius.circular(8),
-                //               ),
-                //               child: const Text(
-                //                 '128',
-                //                 style: TextStyle(
-                //                   fontFamily: 'Sb',
-                //                   fontSize: 12,
-                //                 ),
-                //               ),
-                //             ),
-                //           ],
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
                 //=======================================>>>>>> Technical Specifications
                 SliverToBoxAdapter(
                   child: Padding(
@@ -385,9 +348,9 @@ class ProductDetailScreen extends StatelessWidget {
 }
 
 /// ==========================================================>>>>>this class for Color Varaint For Prodducts
-class ContinerVaraint extends StatelessWidget {
+class VaraintContinerGenerator extends StatelessWidget {
   final List<ProdductVaraint> productList;
-  const ContinerVaraint({
+  const VaraintContinerGenerator({
     super.key,
     required this.productList,
   });
@@ -395,24 +358,48 @@ class ContinerVaraint extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 44, vertical: 20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              productList[1].variantType.title,
-              style: const TextStyle(
-                fontFamily: 'Sb',
-                fontSize: 12,
-              ),
+      children: [
+        for (var produvtVaraints in productList) ...{
+          if (produvtVaraints.variltList.isNotEmpty) ...{
+            VaraintChid(
+              prodductVaraint: produvtVaraints,
+            )
+          }
+        }
+      ],
+    ));
+  }
+}
+
+class VaraintChid extends StatelessWidget {
+  final ProdductVaraint prodductVaraint;
+  const VaraintChid({super.key, required this.prodductVaraint});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 44, vertical: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Text(
+            prodductVaraint.variantType.title,
+            style: const TextStyle(
+              fontFamily: 'Sb',
+              fontSize: 12,
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            StrogeVaraint(varaintListStorge: productList[1].variltList)
-          ],
-        ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          if (prodductVaraint.variantType.type == VariantTypeEnum.STORAGE) ...{
+            StrogeVaraint(varaintListStorge: prodductVaraint.variltList)
+          },
+          if (prodductVaraint.variantType.type == VariantTypeEnum.COLOR) ...{
+            ColorVarain(varaintListColor: prodductVaraint.variltList)
+          }
+        ],
       ),
     );
   }
@@ -421,10 +408,12 @@ class ContinerVaraint extends StatelessWidget {
 /// this class for galley
 class GetGalley extends StatefulWidget {
   final List<ProductGallery> galleyProducts;
+  final String thumbnailImage;
 
   const GetGalley({
     super.key,
     required this.galleyProducts,
+    required this.thumbnailImage,
   });
 
   @override
@@ -469,55 +458,63 @@ class _GetGalleyState extends State<GetGalley> {
                     ),
                     const Spacer(),
                     SizedBox(
-                        height: double.infinity,
+                        height: 200,
+                        width: 200,
                         child: CachedImage(
-                            imageUrl:
-                                widget.galleyProducts[selectedIndex].imgeUrl)),
+                            // cheack for image
+                            imageUrl: (widget.galleyProducts.isEmpty)
+                                ? widget.thumbnailImage
+                                : widget
+                                    .galleyProducts[selectedIndex].imgeUrl)),
                     const Spacer(),
                     Image.asset('assets/images/icon_favorite_deactive.png'),
                   ],
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: SizedBox(
-                height: 75,
-                child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 40 - 12),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: widget.galleyProducts.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedIndex = index;
-                        });
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.only(right: 12),
-                        height: 70,
-                        width: 70,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1,
-                            color: CustomColors.mainTextcolor,
+
+            /// cheack image gallery
+            if (widget.galleyProducts.isNotEmpty) ...{
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: SizedBox(
+                  height: 75,
+                  child: ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 40 - 12),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: widget.galleyProducts.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedIndex = index;
+                          });
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 12),
+                          height: 70,
+                          width: 70,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: CustomColors.mainTextcolor,
+                            ),
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(2),
-                          child: CachedImage(
-                            imageUrl: widget.galleyProducts[index].imgeUrl,
-                            radiuse: 10,
+                          child: Padding(
+                            padding: const EdgeInsets.all(2),
+                            child: CachedImage(
+                              imageUrl: widget.galleyProducts[index].imgeUrl,
+                              radiuse: 10,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
+            },
             const SizedBox(
               height: 20,
             ),
@@ -529,49 +526,6 @@ class _GetGalleyState extends State<GetGalley> {
 }
 
 /// this class for  Gallery
-class GetTtitle extends StatelessWidget {
-  const GetTtitle({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-        height: 46,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Row(
-          children: [
-            const SizedBox(
-              width: 16,
-            ),
-            Image.asset('assets/images/icon_apple_blue.png'),
-            const Expanded(
-              child: Text(
-                'آیفون',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'Sb',
-                  color: CustomColors.mainColor,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-            Image.asset('assets/images/icon_back.png'),
-            const SizedBox(
-              width: 16,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 /// this Class for AddBasket in Shop
 class AddBasket extends StatelessWidget {
@@ -724,27 +678,7 @@ class ColorVarain extends StatefulWidget {
 }
 
 class _ColorVarainState extends State<ColorVarain> {
-  List<Widget> colotWidget = [];
-  @override
-  void initState() {
-    for (var colorVaraint in widget.varaintListColor) {
-      String categoryColor = 'ff${colorVaraint.value}';
-      int hexColor = int.parse(categoryColor, radix: 16);
-      var items = Container(
-        margin: const EdgeInsets.only(left: 10),
-        width: 26,
-        height: 26,
-        decoration: BoxDecoration(
-          color: Color(hexColor),
-          borderRadius: BorderRadius.circular(8),
-        ),
-      );
-
-      colotWidget.add(items);
-    }
-    super.initState();
-  }
-
+  int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -753,9 +687,37 @@ class _ColorVarainState extends State<ColorVarain> {
         textDirection: TextDirection.rtl,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: colotWidget.length,
+          itemCount: widget.varaintListColor.length,
           itemBuilder: (context, index) {
-            return colotWidget[index];
+            String categoryColor = 'ff${widget.varaintListColor[index].value}';
+            int hexColor = int.parse(categoryColor, radix: 16);
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  selectedIndex = index;
+                });
+              },
+              child: Container(
+                margin: const EdgeInsets.only(left: 10),
+                width: 26,
+                height: 26,
+                decoration: BoxDecoration(
+                  border: (selectedIndex == index)
+                      ? Border.all(
+                          width: 6,
+                          color: Colors.white,
+                          strokeAlign: BorderSide.strokeAlignOutside,
+                        )
+                      : Border.all(
+                          width: 2,
+                          color: Colors.white,
+                          strokeAlign: BorderSide.strokeAlignOutside,
+                        ),
+                  color: Color(hexColor),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            );
           },
         ),
       ),
@@ -773,37 +735,7 @@ class StrogeVaraint extends StatefulWidget {
 }
 
 class _StrogeVaraintState extends State<StrogeVaraint> {
-  List<Widget> strogeWidget = [];
-  @override
-  void initState() {
-    for (var storgeVaraint in widget.varaintListStorge) {
-      var items = Container(
-        margin: const EdgeInsets.only(left: 10),
-        alignment: Alignment.center,
-        width: 74,
-        height: 26,
-        decoration: BoxDecoration(
-          border: Border.all(
-            width: 1,
-            color: CustomColors.mainTextcolor,
-          ),
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Text(
-          storgeVaraint.value,
-          style: const TextStyle(
-            fontFamily: 'Sb',
-            fontSize: 12,
-          ),
-        ),
-      );
-
-      strogeWidget.add(items);
-    }
-    super.initState();
-  }
-
+  int selecetedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -811,10 +743,42 @@ class _StrogeVaraintState extends State<StrogeVaraint> {
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: ListView.builder(
-          itemCount: strogeWidget.length,
+          itemCount: widget.varaintListStorge.length,
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
-            return strogeWidget[index];
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  selecetedIndex = index;
+                });
+              },
+              child: Container(
+                margin: const EdgeInsets.only(left: 10),
+                alignment: Alignment.center,
+                width: 74,
+                height: 26,
+                decoration: BoxDecoration(
+                  border: (selecetedIndex == index)
+                      ? Border.all(
+                          width: 1,
+                          color: CustomColors.mainColor,
+                        )
+                      : Border.all(
+                          width: 1,
+                          color: CustomColors.mainTextcolor,
+                        ),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  widget.varaintListStorge[index].value,
+                  style: const TextStyle(
+                    fontFamily: 'Sb',
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            );
           },
         ),
       ),

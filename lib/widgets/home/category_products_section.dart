@@ -35,6 +35,7 @@ class CategoryProducts extends StatelessWidget {
 /// this Class for Products Items
 class ProductsItems extends StatelessWidget {
   final ProdcutsList products;
+
   const ProductsItems({
     super.key,
     required this.products,
@@ -51,11 +52,11 @@ class ProductsItems extends StatelessWidget {
               create: (context) {
                 var bloc = ProductBloc();
                 bloc.add(
-                  ProductInitEvent(),
+                  ProductInitEvent(products.id, products.categoryId),
                 );
                 return bloc;
               },
-              child: const ProductDetailScreen(),
+              child: ProductDetailScreen(products: products),
             ),
           ));
         },

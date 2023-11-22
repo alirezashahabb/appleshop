@@ -8,7 +8,7 @@ class ProdcutsList {
   final String popularity;
   final String name;
   final int quality;
-  final String category;
+  final String categoryId;
   int? realPrice;
   num? percent;
 
@@ -22,7 +22,7 @@ class ProdcutsList {
       this.popularity,
       this.name,
       this.quality,
-      this.category) {
+      this.categoryId) {
     /// this is calculator realPrice
     realPrice = price + discountprice;
     percent = ((price - realPrice!) / price) * 100;
