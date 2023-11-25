@@ -5,6 +5,7 @@ import 'package:appleshop1/common/cached_image_network.dart';
 import 'package:appleshop1/common/color.dart';
 import 'package:appleshop1/data/model/gallery.dart';
 import 'package:appleshop1/data/model/product_varaint.dart';
+import 'package:appleshop1/data/model/propreties.dart';
 import 'package:appleshop1/data/model/variant_type.dart';
 import 'package:appleshop1/data/model/varint.dart';
 import 'package:flutter/material.dart';
@@ -122,52 +123,17 @@ class ProductDetailScreen extends StatelessWidget {
                 },
 
                 //=======================================>>>>>> Technical Specifications
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 44, vertical: 15),
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 46,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 1,
-                          color: CustomColors.mainTextcolor,
-                        ),
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          children: [
-                            Image.asset('assets/images/icon_left_categroy.png'),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            const Text(
-                              'مشاهده',
-                              style: TextStyle(
-                                fontFamily: 'Sb',
-                                fontSize: 14,
-                                color: CustomColors.mainColor,
-                              ),
-                            ),
-                            const Spacer(),
-                            const Text(
-                              ':مشخصات فنی',
-                              style: TextStyle(
-                                fontFamily: 'Sb',
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                if (state is ProductResponseState) ...{
+                  state.propertis.fold((l) {
+                    return SliverToBoxAdapter(
+                      child: Text(l),
+                    );
+                  }, (propertis) {
+                    return ProductPropertis(
+                      properties: propertis,
+                    );
+                  })
+                },
                 //=======================================>>>>>> About Products
                 ProductAbout(descreption: products.descreption),
                 //=======================================>>>>>>  Users Comments
@@ -297,6 +263,120 @@ class ProductDetailScreen extends StatelessWidget {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+//=======================================>>>>>> Technical Specifications
+class ProductPropertis extends StatefulWidget {
+  final List<Properties> properties;
+  const ProductPropertis({
+    super.key,
+    required this.properties,
+  });
+
+  @override
+  State<ProductPropertis> createState() => _ProductPropertisState();
+}
+
+class _ProductPropertisState extends State<ProductPropertis> {
+  bool isvisible = false;
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 44, vertical: 15),
+        child: Column(
+          children: [
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  isvisible = !isvisible;
+                });
+              },
+              child: Container(
+                alignment: Alignment.center,
+                height: 46,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 1,
+                    color: CustomColors.mainTextcolor,
+                  ),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: [
+                      Image.asset('assets/images/icon_left_categroy.png'),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text(
+                        'مشاهده',
+                        style: TextStyle(
+                          fontFamily: 'Sb',
+                          fontSize: 14,
+                          color: CustomColors.mainColor,
+                        ),
+                      ),
+                      const Spacer(),
+                      const Text(
+                        ':مشخصات فنی',
+                        style: TextStyle(
+                          fontFamily: 'Sb',
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Visibility(
+              visible: isvisible,
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 1,
+                    color: CustomColors.mainTextcolor,
+                  ),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: widget.properties.length,
+                  itemBuilder: (context, index) {
+                    var property = widget.properties[index];
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            '${property.value} :  ${property.title}',
+                            textAlign: TextAlign.right,
+                            style: const TextStyle(
+                              fontFamily: 'sm',
+                              fontSize: 12,
+                            ),
+                          ),
+                        )
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

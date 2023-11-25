@@ -1,6 +1,7 @@
 import 'package:appleshop1/common/di.dart';
 import 'package:appleshop1/data/model/category_model.dart';
 import 'package:appleshop1/data/model/product_varaint.dart';
+import 'package:appleshop1/data/model/propreties.dart';
 import 'package:appleshop1/data/repositroy/product_detial_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
@@ -23,7 +24,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
             await _detailRepositroy.getprodctVaraint(event.prodocutId);
         final categories =
             await _detailRepositroy.getCatgories(event.categoryId);
-        emit(ProductResponseState(gallery, prodctVaraints, categories));
+        final propertis =
+            await _detailRepositroy.getpropertis(event.prodocutId);
+        emit(ProductResponseState(
+            gallery, prodctVaraints, categories, propertis));
       },
     );
   }

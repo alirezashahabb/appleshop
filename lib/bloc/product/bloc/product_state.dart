@@ -15,6 +15,8 @@ class ProductResponseState extends ProductState {
   final Either<String, List<ProductGallery>> galleryList;
   final Either<String, List<ProdductVaraint>> varint;
   final Either<String, CategoryItems> categories;
+  final Either<String, List<Properties>> propertis;
 
-  const ProductResponseState(this.galleryList, this.varint, this.categories);
+  const ProductResponseState(
+      this.galleryList, this.varint, this.categories, this.propertis);
 }
