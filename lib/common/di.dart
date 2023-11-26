@@ -12,6 +12,9 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../data/datasource/category_product_datasorce.dart';
+import '../data/repositroy/category_products_repository.dart';
+
 /// this file for getIt handler
 
 var locator = GetIt.instance;
@@ -35,6 +38,8 @@ Future<void> getInit() async {
   locator.registerFactory<IProductsDataSorce>(() => PrdocutsRemoteDataSorce());
   locator.registerFactory<IProductDetialDataSorce>(
       () => ProducDetailRemoteDataSorce());
+  locator.registerFactory<ICategoryProductsDataSorce>(
+      () => CategoryProductsRemoteDataSorce());
 
   ///-----------------------Repositroy handler
 
@@ -46,4 +51,6 @@ Future<void> getInit() async {
   locator.registerFactory<IProductsRepository>(() => ProdcutsRepository());
   locator.registerFactory<IProductDetailRepositroy>(
       () => ProdcutDetailRepository());
+  locator.registerFactory<ICategoryProductsRepositoey>(
+      () => CategoryProductRepository());
 }
