@@ -1,6 +1,6 @@
 import 'package:appleshop1/common/color.dart';
 import 'package:appleshop1/common/di.dart';
-import 'package:appleshop1/screens/root_screens.dart';
+import 'package:appleshop1/screens/cart_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -25,7 +25,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'AppleShop',
       theme: ThemeData(scaffoldBackgroundColor: CustomColors.scaffoldColor),
-      home: const RootScreens(),
+      home: const CartScreen(),
     );
   }
 }

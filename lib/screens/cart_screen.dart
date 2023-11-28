@@ -1,4 +1,5 @@
 import 'package:appleshop1/common/color.dart';
+import 'package:appleshop1/common/extions_string.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 
@@ -103,8 +104,23 @@ class CardItems extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        const Text('1'),
-                        const Text('1'),
+                        const Text(
+                          'آیفون 13 پرو مکس',
+                          style: TextStyle(fontFamily: 'sb', fontSize: 14),
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        const Text(
+                          'گارانتی فیلان',
+                          style: TextStyle(
+                            fontFamily: 'sm',
+                            fontSize: 12,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -124,11 +140,61 @@ class CardItems extends StatelessWidget {
                                     fontSize: 12),
                               ),
                             ),
-                            const Text('تومان'),
-                            const Text('45/000/000'),
+                            const SizedBox(
+                              width: 4,
+                            ),
+                            const Text(
+                              'تومان',
+                              style: TextStyle(fontFamily: 'sm', fontSize: 12),
+                            ),
+                            const SizedBox(
+                              width: 4,
+                            ),
+                            const Text(
+                              '45/000/000',
+                              style: TextStyle(fontFamily: 'sb', fontSize: 14),
+                            ),
                           ],
                         ),
-                        const CheapOptions()
+                        const SizedBox(
+                          height: 8,
+                        ),
+
+                        /// ====================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Wrap
+                        Wrap(
+                          spacing: 10,
+                          children: [
+                            const OptionCheap(
+                              title: 'نارنجی',
+                              color: 'FF5700',
+                            ),
+                            Container(
+                              padding: const EdgeInsets.only(
+                                  bottom: 2, top: 2, right: 4, left: 4),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    width: 1, color: CustomColors.primaryColor),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Text(
+                                    'حدف',
+                                    style: TextStyle(
+                                        fontFamily: 'sm',
+                                        color: CustomColors.primaryColor),
+                                  ),
+                                  Image.asset(
+                                    'assets/images/icon_trash.png',
+                                    width: 12,
+                                    height: 12,
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        )
                       ],
                     ),
                   ),
@@ -154,8 +220,20 @@ class CardItems extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('تومان'),
-                Text('50/000/000'),
+                Text(
+                  'تومان',
+                  style: TextStyle(
+                    fontFamily: 'sb',
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  '50/000/000',
+                  style: TextStyle(
+                    fontFamily: 'sb',
+                    fontSize: 16,
+                  ),
+                ),
               ],
             ),
           ),
@@ -165,29 +243,52 @@ class CardItems extends StatelessWidget {
   }
 }
 
-class CheapOptions extends StatelessWidget {
-  const CheapOptions({
+///------------------------------------------------>>>>>>> Option Cheap
+class OptionCheap extends StatelessWidget {
+  final String color;
+  final String title;
+  const OptionCheap({
     super.key,
+    required this.color,
+    required this.title,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.center,
-      width: 50,
-      height: 20,
+      padding: const EdgeInsets.only(bottom: 2, top: 2, right: 4, left: 4),
       decoration: BoxDecoration(
         border: Border.all(
           width: 1,
           color: CustomColors.mainTextcolor,
         ),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(6),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset('assets/images/icon_options.png'),
-          const Text('1111'),
+          if (color.isNotEmpty) ...{
+            Container(
+              width: 10,
+              height: 10,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: color.paresToColor(),
+              ),
+            )
+          },
+          const SizedBox(
+            width: 4,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 2, top: 2, right: 4),
+            child: Text(
+              title,
+              textDirection: TextDirection.rtl,
+              style: const TextStyle(fontFamily: 'sm', fontSize: 12),
+            ),
+          ),
         ],
       ),
     );
