@@ -13,3 +13,9 @@ class ProductInitEvent extends ProductEvent {
 
   const ProductInitEvent(this.prodocutId, this.categoryId);
 }
+
+class ProductAddToBasketEvent extends ProductEvent {
+  final ProdcutsList prodcutsList;
+
+  const ProductAddToBasketEvent(this.prodcutsList);
+}

@@ -1,8 +1,10 @@
 import 'dart:ui';
 
+import 'package:appleshop1/bloc/Cart/cart_bloc.dart';
 import 'package:appleshop1/bloc/category/category_bloc.dart';
 import 'package:appleshop1/bloc/home/home_bloc.dart';
 import 'package:appleshop1/common/color.dart';
+import 'package:appleshop1/common/di.dart';
 import 'package:appleshop1/screens/cart_screen.dart';
 import 'package:appleshop1/screens/home_screens.dart';
 import 'package:appleshop1/screens/profile_screens.dart';
@@ -196,7 +198,14 @@ class _RootScreensState extends State<RootScreens> {
   List<Widget> getLayOut() {
     return <Widget>[
       const ProfileScreens(),
-      const CartScreen(),
+      BlocProvider(
+        create: (context) {
+          var bloc = locator.get<CartBloc>();
+          bloc.add(CartRequestDataEvent());
+          return bloc;
+        },
+        child: const CartScreen(),
+      ),
       BlocProvider(
         create: (context) {
           var bloc = CategoryBloc();

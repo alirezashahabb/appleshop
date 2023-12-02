@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:appleshop1/bloc/Cart/cart_bloc.dart';
 import 'package:appleshop1/bloc/product/bloc/product_bloc.dart';
 import 'package:appleshop1/common/cached_image_network.dart';
 import 'package:appleshop1/common/color.dart';
@@ -15,10 +16,33 @@ import '../data/model/producs_model.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   final ProdcutsList products;
+
   const ProductDetailScreen({
     super.key,
     required this.products,
   });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) {
+        var bloc = ProductBloc();
+        bloc.add(ProductInitEvent(products.id, products.categoryId));
+        return bloc;
+      },
+      child: DetailContentwidget(products: products),
+    );
+  }
+}
+
+/// this class Content widget
+class DetailContentwidget extends StatelessWidget {
+  const DetailContentwidget({
+    super.key,
+    required this.products,
+  });
+
+  final ProdcutsList products;
 
   @override
   Widget build(BuildContext context) {
@@ -250,12 +274,18 @@ class ProductDetailScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SliverToBoxAdapter(
+                SliverToBoxAdapter(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 44),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 44),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [ShopDetails(), AddBasket()],
+                      children: [
+                        const ShopDetails(),
+                        AddBasket(
+                          products: products,
+                        )
+                      ],
                     ),
                   ),
                 )
@@ -668,53 +698,63 @@ class _GetGalleyState extends State<GetGalley> {
 
 /// this Class for AddBasket in Shop
 class AddBasket extends StatelessWidget {
+  final ProdcutsList products;
   const AddBasket({
     super.key,
+    required this.products,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: [
-        Container(
-          height: 47,
-          width: 140,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: CustomColors.mainColor,
+    return GestureDetector(
+      onTap: () {
+        context.read<ProductBloc>().add(
+              ProductAddToBasketEvent(products),
+            );
+        context.read<CartBloc>().add(CartRequestDataEvent());
+      },
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          Container(
+            height: 47,
+            width: 140,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: CustomColors.mainColor,
+            ),
           ),
-        ),
-        Positioned(
-          right: 0,
-          left: 0,
-          top: 6,
-          bottom: 0,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(15),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-              child: Container(
-                height: 53,
-                width: 160,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(
-                    width: 1,
-                    color: Colors.white,
+          Positioned(
+            right: 0,
+            left: 0,
+            top: 6,
+            bottom: 0,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: Container(
+                  height: 53,
+                  width: 160,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(
+                      width: 1,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                child: const Center(
-                  child: Text(
-                    'افزودن به سبد خرید',
-                    style: TextStyle(fontFamily: 'Sm', color: Colors.white),
+                  child: const Center(
+                    child: Text(
+                      'افزودن به سبد خرید',
+                      style: TextStyle(fontFamily: 'Sm', color: Colors.white),
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
