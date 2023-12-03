@@ -7,6 +7,7 @@ import 'package:dartz/dartz.dart';
 abstract class IBasketRepository {
   Future<Either<String, String>> addProductToBasket(BasketItem basketItem);
   Future<Either<String, List<BasketItem>>> getAllBasketItem();
+  Future<int> getBasketFinalPrice();
 }
 
 class BasketRepository extends IBasketRepository {
@@ -30,5 +31,10 @@ class BasketRepository extends IBasketRepository {
     } on ApiExptions catch (e) {
       return Left(e.message ?? 'خطا نا مشخص');
     }
+  }
+
+  @override
+  Future<int> getBasketFinalPrice() async {
+    return basketDataSorce.getBasketFinalPrice();
   }
 }

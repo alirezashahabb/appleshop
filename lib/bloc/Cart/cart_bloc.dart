@@ -13,7 +13,10 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   CartBloc() : super(CartInitial()) {
     on<CartRequestDataEvent>((event, emit) async {
       var repsonce = await _basketrepositroy.getAllBasketItem();
-      emit(CartFeatchHiveState(repsonce));
+      var finalPrice = await _basketrepositroy.getBasketFinalPrice();
+      emit(
+        CartFeatchHiveState(repsonce, finalPrice),
+      );
     });
   }
 }

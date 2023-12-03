@@ -3,6 +3,7 @@ import 'package:appleshop1/common/cached_image_network.dart';
 import 'package:appleshop1/common/color.dart';
 import 'package:appleshop1/common/extions_string.dart';
 import 'package:appleshop1/data/model/cart_item.dart';
+import 'package:appleshop1/screens/root_screens.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -72,24 +73,79 @@ class CartScreen extends StatelessWidget {
                   )
                 ],
               ),
-              Container(
-                alignment: Alignment.center,
-                margin: const EdgeInsets.symmetric(horizontal: 44),
-                height: 53,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: CustomColors.greenColor,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: const Text(
-                  'ادامه فرایند خرید',
-                  style: TextStyle(
-                    fontFamily: 'Sm',
-                    fontSize: 16,
-                    color: Colors.white,
-                  ),
-                ),
-              )
+              if (state is CartFeatchHiveState) ...{
+                state.finalBasketPrice == 0
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/Add.png',
+                            width: 300,
+                            height: 300,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const Text(
+                            'سبد خرید شما خالی هست',
+                            style: TextStyle(
+                              fontFamily: 'Sm',
+                              fontSize: 18,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const RootScreens(),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 44, vertical: 20),
+                              height: 53,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                color: CustomColors.mainColor,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: const Text(
+                                'رفتن به فروشگاه',
+                                style: TextStyle(
+                                  fontFamily: 'Sm',
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                    : Container(
+                        alignment: Alignment.center,
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 44, vertical: 20),
+                        height: 53,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: CustomColors.greenColor,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Text(
+                          '${state.finalBasketPrice}',
+                          style: const TextStyle(
+                            fontFamily: 'Sm',
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
+                        ),
+                      )
+              }
             ],
           );
         },
