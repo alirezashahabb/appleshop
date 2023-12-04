@@ -9,6 +9,8 @@ import 'package:appleshop1/data/model/product_varaint.dart';
 import 'package:appleshop1/data/model/propreties.dart';
 import 'package:appleshop1/data/model/variant_type.dart';
 import 'package:appleshop1/data/model/varint.dart';
+import 'package:cherry_toast/cherry_toast.dart';
+import 'package:cherry_toast/resources/arrays.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -708,6 +710,15 @@ class AddBasket extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        /// this is for AlrtDailog
+        CherryToast.success(
+          layout: ToastLayout.rtl,
+          title: Text(
+            "${products.name} \n  با موفیت به سبد خرید شما اضافه شد",
+            textAlign: TextAlign.right,
+            style: const TextStyle(color: Colors.black, fontFamily: 'sm'),
+          ),
+        ).show(context);
         context.read<ProductBloc>().add(
               ProductAddToBasketEvent(products),
             );

@@ -8,8 +8,18 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
+
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,22 +136,32 @@ class CartScreen extends StatelessWidget {
                           )
                         ],
                       )
-                    : Container(
-                        alignment: Alignment.center,
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 44, vertical: 20),
-                        height: 53,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          color: CustomColors.greenColor,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Text(
-                          '${state.finalBasketPrice}',
-                          style: const TextStyle(
-                            fontFamily: 'Sm',
-                            fontSize: 16,
-                            color: Colors.white,
+                    : GestureDetector(
+                        onTap: () {
+                          context
+                              .read<CartBloc>()
+                              .add(BasketPeymentInitEvent());
+                          context
+                              .read<CartBloc>()
+                              .add(BasketPeymentRequistEvent());
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 44, vertical: 20),
+                          height: 53,
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            color: CustomColors.greenColor,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Text(
+                            '${state.finalBasketPrice}',
+                            style: const TextStyle(
+                              fontFamily: 'Sm',
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       )
