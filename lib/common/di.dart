@@ -1,4 +1,6 @@
 import 'package:appleshop1/bloc/Cart/cart_bloc.dart';
+import 'package:appleshop1/common/peyment_handler.dart';
+import 'package:appleshop1/common/url_handler.dart';
 import 'package:appleshop1/data/datasource/auth_datasoruce.dart';
 import 'package:appleshop1/data/datasource/banner_dataSorce.dart';
 import 'package:appleshop1/data/datasource/basket_item_dataSource.dart';
@@ -23,30 +25,24 @@ import '../data/repositroy/category_products_repository.dart';
 var locator = GetIt.instance;
 
 Future<void> getInit() async {
-  ///-----------------------components handler
-  locator.registerSingleton<Dio>(
-    Dio(
-      BaseOptions(baseUrl: 'http://startflutter.ir/api/'),
-    ),
-  );
+  ///Components
 
-  locator.registerSingleton<SharedPreferences>(
-      await SharedPreferences.getInstance());
+  await _initComponents();
 
   ///------------------------DataSorce handler
-
-  locator.registerFactory<IAuthDataSorce>(() => AuthRemoteDataSorce());
-  locator.registerFactory<IcategoryDataSorce>(() => CategoryRemoteDataSorce());
-  locator.registerFactory<IBannerDataSorce>(() => BannerRemoteDataSorce());
-  locator.registerFactory<IProductsDataSorce>(() => PrdocutsRemoteDataSorce());
-  locator.registerFactory<IProductDetialDataSorce>(
-      () => ProducDetailRemoteDataSorce());
-  locator.registerFactory<ICategoryProductsDataSorce>(
-      () => CategoryProductsRemoteDataSorce());
-  locator.registerFactory<IBasketDataSorce>(() => BaskteILocalDataSorce());
+  _initDataSorce();
 
   ///-----------------------Repositroy handler
 
+  _initRepositroy();
+
+  /// bloc
+  locator.registerSingleton<CartBloc>(
+    CartBloc(locator.get()),
+  );
+}
+
+void _initRepositroy() async {
   locator.registerFactory<IAuthRepositroy>(() => Authrepostiry());
   locator
       .registerFactory<ICategoryRepositroy>(() => CategoryProductsRepository());
@@ -58,9 +54,31 @@ Future<void> getInit() async {
   locator.registerFactory<ICategoryProductsRepositoey>(
       () => CategoryProductRepository());
   locator.registerFactory<IBasketRepository>(() => BasketRepository());
+}
 
-  /// bloc
-  locator.registerSingleton<CartBloc>(
-    CartBloc(),
+void _initDataSorce() async {
+  locator.registerFactory<IAuthDataSorce>(() => AuthRemoteDataSorce());
+  locator.registerFactory<IcategoryDataSorce>(() => CategoryRemoteDataSorce());
+  locator.registerFactory<IBannerDataSorce>(() => BannerRemoteDataSorce());
+  locator.registerFactory<IProductsDataSorce>(() => PrdocutsRemoteDataSorce());
+  locator.registerFactory<IProductDetialDataSorce>(
+      () => ProducDetailRemoteDataSorce());
+  locator.registerFactory<ICategoryProductsDataSorce>(
+      () => CategoryProductsRemoteDataSorce());
+  locator.registerFactory<IBasketDataSorce>(() => BaskteILocalDataSorce());
+}
+
+Future<void> _initComponents() async {
+  locator.registerSingleton<UrlHandler>(UrlLauncher());
+  locator
+      .registerSingleton<PaymentHandler>(ZarinpalPaymentHandler(locator.get()));
+
+  ///-----------------------components handler
+  locator.registerSingleton<Dio>(
+    Dio(
+      BaseOptions(baseUrl: 'http://startflutter.ir/api/'),
+    ),
   );
+  locator.registerSingleton<SharedPreferences>(
+      await SharedPreferences.getInstance());
 }

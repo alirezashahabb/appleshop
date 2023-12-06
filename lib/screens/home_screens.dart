@@ -21,51 +21,54 @@ class HomeScreens extends StatelessWidget {
         builder: (context, state) {
           return CustomScrollView(
             slivers: [
-              if (state is HomeLoadingstate) ...[
+              if (state is HomeLoadingstate) ...{
                 const SliverToBoxAdapter(
                   child: Center(
                     child: CircularProgressIndicator(),
                   ),
                 )
-              ],
-              const _GetSearchBox(),
-              if (state is HomeResponceState) ...[
-                state.banners.fold(
-                  (l) => SliverToBoxAdapter(
-                    child: Text(l),
+              } else ...{
+                const _GetSearchBox(),
+                if (state is HomeResponceState) ...[
+                  state.banners.fold(
+                    (l) => SliverToBoxAdapter(
+                      child: Text(l),
+                    ),
+                    (r) => _GetBannerList(r),
                   ),
-                  (r) => _GetBannerList(r),
-                ),
-              ],
-              const _GetCategoryTitle(),
-              if (state is HomeResponceState) ...[
-                state.categories.fold(
-                  (error) => SliverToBoxAdapter(
-                    child: Text(error),
+                ],
+                const _GetCategoryTitle(),
+                if (state is HomeResponceState) ...[
+                  state.categories.fold(
+                    (error) => SliverToBoxAdapter(
+                      child: Text(error),
+                    ),
+                    (responce) => _GetCategoryList(responce),
                   ),
-                  (responce) => _GetCategoryList(responce),
-                ),
-              ],
-              const _GetBestSellerTitle(),
-              if (state is HomeResponceState) ...[
-                state.bestSllers.fold(
-                  (error) => SliverToBoxAdapter(
-                    child: Text(error),
+                ],
+                const _GetBestSellerTitle(),
+                if (state is HomeResponceState) ...[
+                  state.bestSllers.fold(
+                    (error) => SliverToBoxAdapter(
+                      child: Text(error),
+                    ),
+                    (r) => GetAllProducts(r),
                   ),
-                  (r) => GetAllProducts(r),
-                ),
-              ],
-              const _GetMostViewTitle(),
-              if (state is HomeResponceState) ...[
-                state.hotest.fold(
-                  (error) => SliverToBoxAdapter(
-                    child: Text(error),
+                ],
+                const _GetMostViewTitle(),
+                if (state is HomeResponceState) ...[
+                  state.hotest.fold(
+                    (error) => SliverToBoxAdapter(
+                      child: Text(error),
+                    ),
+                    (r) => GetAllProducts(r),
                   ),
-                  (r) => GetAllProducts(r),
+                ],
+                // const _GetMostView(),
+                const SliverPadding(
+                  padding: EdgeInsets.only(bottom: 20),
                 ),
-              ],
-              // const _GetMostView(),
-              const SliverPadding(padding: EdgeInsets.only(bottom: 20))
+              },
             ],
           );
         },
