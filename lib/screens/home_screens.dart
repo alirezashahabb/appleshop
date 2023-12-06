@@ -8,6 +8,7 @@ import 'package:appleshop1/widgets/home/product_itme.dart';
 import 'package:appleshop1/widgets/home/slider_baneer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class HomeScreens extends StatelessWidget {
   const HomeScreens({super.key});
@@ -19,61 +20,75 @@ class HomeScreens extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
-          return CustomScrollView(
-            slivers: [
-              if (state is HomeLoadingstate) ...{
-                const SliverToBoxAdapter(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                )
-              } else ...{
-                const _GetSearchBox(),
-                if (state is HomeResponceState) ...[
-                  state.banners.fold(
-                    (l) => SliverToBoxAdapter(
-                      child: Text(l),
-                    ),
-                    (r) => _GetBannerList(r),
-                  ),
-                ],
-                const _GetCategoryTitle(),
-                if (state is HomeResponceState) ...[
-                  state.categories.fold(
-                    (error) => SliverToBoxAdapter(
-                      child: Text(error),
-                    ),
-                    (responce) => _GetCategoryList(responce),
-                  ),
-                ],
-                const _GetBestSellerTitle(),
-                if (state is HomeResponceState) ...[
-                  state.bestSllers.fold(
-                    (error) => SliverToBoxAdapter(
-                      child: Text(error),
-                    ),
-                    (r) => GetAllProducts(r),
-                  ),
-                ],
-                const _GetMostViewTitle(),
-                if (state is HomeResponceState) ...[
-                  state.hotest.fold(
-                    (error) => SliverToBoxAdapter(
-                      child: Text(error),
-                    ),
-                    (r) => GetAllProducts(r),
-                  ),
-                ],
-                // const _GetMostView(),
-                const SliverPadding(
-                  padding: EdgeInsets.only(bottom: 20),
-                ),
-              },
-            ],
+          return SafeArea(
+            child: _getHomeScreenContent(state, context),
           );
         },
       ),
     ));
+  }
+}
+
+/// this widget for Content Home Screens
+Widget _getHomeScreenContent(HomeState state, BuildContext context) {
+  if (state is HomeLoadingstate) {
+    return const Center(
+      child: SpinKitWaveSpinner(
+        size: 300,
+        color: CustomColors.mainColor,
+      ),
+    );
+  } else if (state is HomeResponceState) {
+    return RefreshIndicator(
+      onRefresh: () async {
+        context.read<HomeBloc>().add(HomeInitEvent());
+      },
+      child: CustomScrollView(
+        slivers: [
+          const _GetSearchBox(),
+
+          state.banners.fold(
+            (l) => SliverToBoxAdapter(
+              child: Text(l),
+            ),
+            (r) => _GetBannerList(r),
+          ),
+          const _GetCategoryTitle(),
+
+          state.categories.fold(
+            (error) => SliverToBoxAdapter(
+              child: Text(error),
+            ),
+            (responce) => _GetCategoryList(responce),
+          ),
+
+          const _GetBestSellerTitle(),
+
+          state.bestSllers.fold(
+            (error) => SliverToBoxAdapter(
+              child: Text(error),
+            ),
+            (r) => GetAllProducts(r),
+          ),
+
+          const _GetMostViewTitle(),
+
+          state.hotest.fold(
+            (error) => SliverToBoxAdapter(
+              child: Text(error),
+            ),
+            (r) => GetAllProducts(r),
+          ),
+
+          // const _GetMostView(),
+          const SliverPadding(
+            padding: EdgeInsets.only(bottom: 20),
+          ),
+        ],
+      ),
+    );
+  } else {
+    return const Text('خطا محتوایی وحود ندارد');
   }
 }
 
