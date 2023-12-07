@@ -1,5 +1,16 @@
 import 'dart:ui';
 
+import 'package:intl/intl.dart';
+
+/// this extension for Price set cama
+extension PriceParing on int? {
+  String formatPrice() {
+    final formatter = NumberFormat('#,##0', 'en_US');
+
+    return formatter.format(this);
+  }
+}
+
 /// this extension convert  hexCode to Color
 extension ColorParsing on String? {
   Color paresToColor() {

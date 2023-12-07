@@ -156,7 +156,7 @@ class _CartScreenState extends State<CartScreen> {
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Text(
-                            '${state.finalBasketPrice}',
+                            state.finalBasketPrice.formatPrice(),
                             style: const TextStyle(
                               fontFamily: 'Sm',
                               fontSize: 16,
@@ -206,6 +206,7 @@ class CardItems extends StatelessWidget {
                       children: [
                         Text(
                           basket.name,
+                          maxLines: 1,
                           style:
                               const TextStyle(fontFamily: 'sb', fontSize: 14),
                         ),
@@ -233,9 +234,9 @@ class CardItems extends StatelessWidget {
                                 color: CustomColors.primaryColor,
                                 borderRadius: BorderRadius.circular(7),
                               ),
-                              child: const Text(
-                                '',
-                                style: TextStyle(
+                              child: Text(
+                                '${basket.percent!.round().toString()}%',
+                                style: const TextStyle(
                                     fontFamily: 'Sm',
                                     color: Colors.white,
                                     fontSize: 12),
@@ -252,7 +253,7 @@ class CardItems extends StatelessWidget {
                               width: 4,
                             ),
                             Text(
-                              basket.price.toString(),
+                              basket.price.formatPrice(),
                               style: const TextStyle(
                                   fontFamily: 'sb', fontSize: 14),
                             ),
@@ -332,7 +333,7 @@ class CardItems extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  basket.realPrice.toString(),
+                  basket.realPrice.formatPrice(),
                   style: const TextStyle(
                     fontFamily: 'sb',
                     fontSize: 16,

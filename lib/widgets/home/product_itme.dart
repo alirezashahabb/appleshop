@@ -2,6 +2,7 @@ import 'package:appleshop1/bloc/Cart/cart_bloc.dart';
 import 'package:appleshop1/common/cached_image_network.dart';
 import 'package:appleshop1/common/color.dart';
 import 'package:appleshop1/common/di.dart';
+import 'package:appleshop1/common/extions_string.dart';
 import 'package:appleshop1/data/model/producs_model.dart';
 import 'package:appleshop1/screens/shop_deatil_screen.dart';
 import 'package:flutter/material.dart';
@@ -145,7 +146,7 @@ class ProductsItems extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          products.price.toString(),
+                          products.price.formatPrice(),
                           style: const TextStyle(
                             decoration: TextDecoration.lineThrough,
                             fontFamily: 'Sm',
@@ -154,7 +155,7 @@ class ProductsItems extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          products.realPrice.toString(),
+                          products.realPrice.formatPrice(),
                           style: const TextStyle(
                             fontFamily: 'Sm',
                             fontSize: 14,
