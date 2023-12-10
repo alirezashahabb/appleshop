@@ -5,6 +5,7 @@ import 'package:appleshop1/data/datasource/auth_datasoruce.dart';
 import 'package:appleshop1/data/datasource/banner_dataSorce.dart';
 import 'package:appleshop1/data/datasource/basket_item_dataSource.dart';
 import 'package:appleshop1/data/datasource/catogery_dataSorce.dart';
+import 'package:appleshop1/data/datasource/comment_datasource.dart';
 import 'package:appleshop1/data/datasource/product_detail_dataSorce.dart';
 import 'package:appleshop1/data/datasource/products_datasorce.dart';
 import 'package:appleshop1/data/repositroy/auth_repositroy.dart';
@@ -42,6 +43,7 @@ Future<void> getInit() async {
   );
 }
 
+/////////////////////////////////////////////////Repositroy
 void _initRepositroy() async {
   locator.registerFactory<IAuthRepositroy>(() => Authrepostiry());
   locator
@@ -56,6 +58,7 @@ void _initRepositroy() async {
   locator.registerFactory<IBasketRepository>(() => BasketRepository());
 }
 
+/////////////////////////////////////////////////////////////DataSorce
 void _initDataSorce() async {
   locator.registerFactory<IAuthDataSorce>(() => AuthRemoteDataSorce());
   locator.registerFactory<IcategoryDataSorce>(() => CategoryRemoteDataSorce());
@@ -66,6 +69,7 @@ void _initDataSorce() async {
   locator.registerFactory<ICategoryProductsDataSorce>(
       () => CategoryProductsRemoteDataSorce());
   locator.registerFactory<IBasketDataSorce>(() => BaskteILocalDataSorce());
+  locator.registerFactory<ICommentDataSorce>(() => CommentRemoteDataSorce());
 }
 
 Future<void> _initComponents() async {
