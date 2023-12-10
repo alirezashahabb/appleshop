@@ -4,11 +4,13 @@ import 'package:appleshop1/bloc/Cart/cart_bloc.dart';
 import 'package:appleshop1/bloc/product/bloc/product_bloc.dart';
 import 'package:appleshop1/common/cached_image_network.dart';
 import 'package:appleshop1/common/color.dart';
+import 'package:appleshop1/common/extions_string.dart';
 import 'package:appleshop1/data/model/gallery.dart';
 import 'package:appleshop1/data/model/product_varaint.dart';
 import 'package:appleshop1/data/model/propreties.dart';
 import 'package:appleshop1/data/model/variant_type.dart';
 import 'package:appleshop1/data/model/varint.dart';
+import 'package:appleshop1/widgets/laoding_animation.dart';
 import 'package:cherry_toast/cherry_toast.dart';
 import 'package:cherry_toast/resources/arrays.dart';
 import 'package:flutter/material.dart';
@@ -32,14 +34,14 @@ class ProductDetailScreen extends StatelessWidget {
         bloc.add(ProductInitEvent(products.id, products.categoryId));
         return bloc;
       },
-      child: DetailContentwidget(products: products),
+      child: DetailContentScreen(products: products),
     );
   }
 }
 
 /// this class Content widget
-class DetailContentwidget extends StatelessWidget {
-  const DetailContentwidget({
+class DetailContentScreen extends StatelessWidget {
+  const DetailContentScreen({
     super.key,
     required this.products,
   });
@@ -56,9 +58,7 @@ class DetailContentwidget extends StatelessWidget {
               slivers: [
                 if (state is ProductLoadingState) ...[
                   const SliverToBoxAdapter(
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                    child: LoadingAnimations(),
                   ),
                 ],
                 if (state is ProductResponseState) ...{
@@ -110,18 +110,20 @@ class DetailContentwidget extends StatelessWidget {
                   ),
                 },
 
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: Text(
-                      products.name,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontFamily: 'Sb',
+                if (state is ProductResponseState) ...{
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: Text(
+                        products.name,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontFamily: 'Sb',
+                        ),
                       ),
                     ),
                   ),
-                ),
+                },
 
                 if (state is ProductResponseState) ...[
                   state.galleryList.fold((errorMessage) {
@@ -161,136 +163,144 @@ class DetailContentwidget extends StatelessWidget {
                   })
                 },
                 //=======================================>>>>>> About Products
-                ProductAbout(descreption: products.descreption),
+                if (state is ProductResponseState) ...{
+                  ProductAbout(descreption: products.descreption),
+                },
                 //=======================================>>>>>>  Users Comments
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 44, vertical: 15),
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 46,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 1,
-                          color: CustomColors.mainTextcolor,
+                if (state is ProductResponseState) ...{
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 44, vertical: 15),
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 46,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 1,
+                            color: CustomColors.mainTextcolor,
+                          ),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
                         ),
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          children: [
-                            Image.asset('assets/images/icon_left_categroy.png'),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            const Text(
-                              'مشاهده',
-                              style: TextStyle(
-                                fontFamily: 'Sb',
-                                fontSize: 14,
-                                color: CustomColors.mainColor,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                  'assets/images/icon_left_categroy.png'),
+                              const SizedBox(
+                                width: 10,
                               ),
-                            ),
-                            const Spacer(),
-                            Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                Container(
-                                  width: 26,
-                                  height: 26,
-                                  decoration: BoxDecoration(
-                                      color: Colors.red,
-                                      borderRadius: BorderRadius.circular(8)),
+                              const Text(
+                                'مشاهده',
+                                style: TextStyle(
+                                  fontFamily: 'Sb',
+                                  fontSize: 14,
+                                  color: CustomColors.mainColor,
                                 ),
-                                Positioned(
-                                  right: 15,
-                                  child: Container(
+                              ),
+                              const Spacer(),
+                              Stack(
+                                clipBehavior: Clip.none,
+                                children: [
+                                  Container(
                                     width: 26,
                                     height: 26,
                                     decoration: BoxDecoration(
-                                      color: Colors.green,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(8)),
                                   ),
-                                ),
-                                Positioned(
-                                  right: 30,
-                                  child: Container(
-                                    width: 26,
-                                    height: 26,
-                                    decoration: BoxDecoration(
-                                      color: Colors.yellow,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  right: 45,
-                                  child: Container(
-                                    width: 26,
-                                    height: 26,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  right: 60,
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    width: 26,
-                                    height: 26,
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: const Text(
-                                      '+10',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Sm',
+                                  Positioned(
+                                    right: 15,
+                                    child: Container(
+                                      width: 26,
+                                      height: 26,
+                                      decoration: BoxDecoration(
+                                        color: Colors.green,
+                                        borderRadius: BorderRadius.circular(8),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            const Text(
-                              ':نظر کاربران ',
-                              style: TextStyle(
-                                fontFamily: 'Sb',
-                                fontSize: 12,
+                                  Positioned(
+                                    right: 30,
+                                    child: Container(
+                                      width: 26,
+                                      height: 26,
+                                      decoration: BoxDecoration(
+                                        color: Colors.yellow,
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    right: 45,
+                                    child: Container(
+                                      width: 26,
+                                      height: 26,
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue,
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    right: 60,
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      width: 26,
+                                      height: 26,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey,
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: const Text(
+                                        '+10',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'Sm',
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              const Text(
+                                ':نظر کاربران ',
+                                style: TextStyle(
+                                  fontFamily: 'Sb',
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 44),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const ShopDetails(),
-                        AddBasket(
-                          products: products,
-                        )
-                      ],
+                },
+
+                if (state is ProductResponseState) ...{
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20, horizontal: 44),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ShopDetails(products: products),
+                          AddBasket(
+                            products: products,
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                )
+                  )
+                }
               ],
             ),
           );
@@ -770,10 +780,12 @@ class AddBasket extends StatelessWidget {
   }
 }
 
-/// this Class for ShopDetals
+/// this Class for ShopDetals example price and real price....
 class ShopDetails extends StatelessWidget {
+  final ProdcutsList products;
   const ShopDetails({
     super.key,
+    required this.products,
   });
 
   @override
@@ -815,19 +827,19 @@ class ShopDetails extends StatelessWidget {
                       'تومان',
                       style: TextStyle(fontFamily: 'Sm', color: Colors.white),
                     ),
-                    const Column(
+                    Column(
                       children: [
                         Text(
-                          '۱۷٬۸۰۰٬۰۰۰',
-                          style: TextStyle(
+                          products.price.formatPrice(),
+                          style: const TextStyle(
                               fontFamily: 'Sm',
                               color: Colors.white,
                               fontSize: 10),
                         ),
                         Text(
-                          '۱۶٬۹۸۹٬۰۰۰',
-                          style:
-                              TextStyle(fontFamily: 'Sm', color: Colors.white),
+                          products.realPrice.formatPrice(),
+                          style: const TextStyle(
+                              fontFamily: 'Sm', color: Colors.white),
                         ),
                       ],
                     ),
@@ -839,9 +851,9 @@ class ShopDetails extends StatelessWidget {
                         color: CustomColors.primaryColor,
                         borderRadius: BorderRadius.circular(7),
                       ),
-                      child: const Text(
-                        '5%',
-                        style: TextStyle(
+                      child: Text(
+                        '${products.percent!.round().toString()}%',
+                        style: const TextStyle(
                             fontFamily: 'Sm',
                             color: Colors.white,
                             fontSize: 12),

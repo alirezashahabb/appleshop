@@ -6,9 +6,9 @@ import 'package:appleshop1/data/model/producs_model.dart';
 import 'package:appleshop1/widgets/home/category_section.dart';
 import 'package:appleshop1/widgets/home/product_itme.dart';
 import 'package:appleshop1/widgets/home/slider_baneer.dart';
+import 'package:appleshop1/widgets/laoding_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class HomeScreens extends StatelessWidget {
   const HomeScreens({super.key});
@@ -32,12 +32,7 @@ class HomeScreens extends StatelessWidget {
 /// this widget for Content Home Screens
 Widget _getHomeScreenContent(HomeState state, BuildContext context) {
   if (state is HomeLoadingstate) {
-    return const Center(
-      child: SpinKitWaveSpinner(
-        size: 300,
-        color: CustomColors.mainColor,
-      ),
-    );
+    return const LoadingAnimations();
   } else if (state is HomeResponceState) {
     return RefreshIndicator(
       onRefresh: () async {
