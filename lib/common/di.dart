@@ -12,6 +12,7 @@ import 'package:appleshop1/data/repositroy/auth_repositroy.dart';
 import 'package:appleshop1/data/repositroy/banner_repositroy.dart';
 import 'package:appleshop1/data/repositroy/basket_item_repository.dart';
 import 'package:appleshop1/data/repositroy/catrgory_repository.dart';
+import 'package:appleshop1/data/repositroy/comment_repositroy.dart';
 import 'package:appleshop1/data/repositroy/product_detial_repository.dart';
 import 'package:appleshop1/data/repositroy/products_repository.dart';
 import 'package:dio/dio.dart';
@@ -56,6 +57,7 @@ void _initRepositroy() async {
   locator.registerFactory<ICategoryProductsRepositoey>(
       () => CategoryProductRepository());
   locator.registerFactory<IBasketRepository>(() => BasketRepository());
+  locator.registerFactory<ICommentRepositroy>(() => CommentRepositroy());
 }
 
 /////////////////////////////////////////////////////////////DataSorce
