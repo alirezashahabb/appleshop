@@ -12,3 +12,10 @@ class CommentInitEvent extends CommentEvent {
 
   const CommentInitEvent(this.productId);
 }
+
+class CoometPostEvent extends CommentEvent {
+  final String productId;
+  final String comment;
+
+  const CoometPostEvent(this.productId, this.comment);
+}

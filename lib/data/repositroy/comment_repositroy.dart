@@ -6,6 +6,7 @@ import 'package:dartz/dartz.dart';
 
 abstract class ICommentRepositroy {
   Future<Either<String, List<CommentList>>> getComment(String productId);
+  Future<Either<String, String>> postComment(String productId, String text);
 }
 
 class CommentRepositroy implements ICommentRepositroy {
@@ -15,6 +16,18 @@ class CommentRepositroy implements ICommentRepositroy {
     try {
       var responce = await _commentDataSorce.grtcomment(productId);
       return Right(responce);
+    } on ApiExptions catch (e) {
+      return Left(e.message ?? 'خطا نا مشخص');
+    }
+  }
+
+  @override
+  Future<Either<String, String>> postComment(
+      String productId, String text) async {
+    try {
+      // ignore: unused_local_variable
+      var responce = await _commentDataSorce.postComment(productId, text);
+      return const Right('گامنت با موفقیت ثبت شد');
     } on ApiExptions catch (e) {
       return Left(e.message ?? 'خطا نا مشخص');
     }

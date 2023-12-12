@@ -16,3 +16,15 @@ class CommentResponceState extends CommentState {
 
   const CommentResponceState(this.getComment);
 }
+
+class CommnetPostLoadingState extends CommentState {
+  final bool isLoading;
+
+  const CommnetPostLoadingState(this.isLoading);
+}
+
+class CommnetPostResponceState extends CommentState {
+  final Either<String, String> respoce;
+
+  const CommnetPostResponceState(this.respoce);
+}
