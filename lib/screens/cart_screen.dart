@@ -72,6 +72,7 @@ class _CartScreenState extends State<CartScreen> {
                         delegate: SliverChildBuilderDelegate(
                           (context, index) => CardItems(
                             basket: basketItem[index],
+                            index: index,
                           ),
                           childCount: basketItem.length,
                         ),
@@ -156,7 +157,7 @@ class _CartScreenState extends State<CartScreen> {
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Text(
-                            state.finalBasketPrice.formatPrice(),
+                            '${state.finalBasketPrice.formatPrice()} :پرداخت مبلغ',
                             style: const TextStyle(
                               fontFamily: 'Sm',
                               fontSize: 16,
@@ -177,9 +178,11 @@ class _CartScreenState extends State<CartScreen> {
 /// this class for Card Items
 class CardItems extends StatelessWidget {
   final BasketItem basket;
+  final int index;
   const CardItems({
     super.key,
     required this.basket,
+    required this.index,
   });
 
   @override
@@ -271,29 +274,37 @@ class CardItems extends StatelessWidget {
                               title: 'نارنجی',
                               color: 'FF5700',
                             ),
-                            Container(
-                              padding: const EdgeInsets.only(
-                                  bottom: 2, top: 2, right: 4, left: 4),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 1, color: CustomColors.primaryColor),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Text(
-                                    'حدف',
-                                    style: TextStyle(
-                                        fontFamily: 'sm',
-                                        color: CustomColors.primaryColor),
-                                  ),
-                                  Image.asset(
-                                    'assets/images/icon_trash.png',
-                                    width: 12,
-                                    height: 12,
-                                  )
-                                ],
+                            GestureDetector(
+                              onTap: () {
+                                context
+                                    .read<CartBloc>()
+                                    .add(BaskeRemoveEvent(index));
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.only(
+                                    bottom: 2, top: 2, right: 4, left: 4),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      width: 1,
+                                      color: CustomColors.primaryColor),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Text(
+                                      'حذف',
+                                      style: TextStyle(
+                                          fontFamily: 'sm',
+                                          color: CustomColors.primaryColor),
+                                    ),
+                                    Image.asset(
+                                      'assets/images/icon_trash.png',
+                                      width: 12,
+                                      height: 12,
+                                    )
+                                  ],
+                                ),
                               ),
                             )
                           ],

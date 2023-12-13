@@ -11,3 +11,10 @@ class BasketPeymentInitEvent extends CartEvent {}
 
 /// this event for Peyment
 class BasketPeymentRequistEvent extends CartEvent {}
+
+/// this event for Remove product form Basket
+class BaskeRemoveEvent extends CartEvent {
+  final int index;
+
+  BaskeRemoveEvent(this.index);
+}

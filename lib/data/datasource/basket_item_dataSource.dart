@@ -5,6 +5,7 @@ abstract class IBasketDataSorce {
   Future<void> addProduct(BasketItem addItem);
   Future<List<BasketItem>> addBasket();
   Future<int> getBasketFinalPrice();
+  Future<void> removeProduct(int index);
 }
 
 class BaskteILocalDataSorce extends IBasketDataSorce {
@@ -26,5 +27,10 @@ class BaskteILocalDataSorce extends IBasketDataSorce {
     var finalPrice = price.fold(
         0, (previousValue, element) => previousValue + element.realPrice!);
     return finalPrice;
+  }
+
+  @override
+  Future<void> removeProduct(int index) async {
+    box.deleteAt(index);
   }
 }

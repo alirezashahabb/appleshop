@@ -53,6 +53,7 @@ class DetailContentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: BlocBuilder<ProductBloc, ProductState>(
         builder: (context, state) {
           return SafeArea(
@@ -338,7 +339,7 @@ class DetailContentScreen extends StatelessWidget {
   }
 }
 
-/// this class for Comment Detail example name and user.....................
+/// ==================================================>>>>this class for Comment Detail example name and user.....................
 class CommentBottomSheet extends StatelessWidget {
   final String productId;
   const CommentBottomSheet({
@@ -354,146 +355,148 @@ class CommentBottomSheet extends StatelessWidget {
         if (state is CommentLoadingState) {
           return const LoadingAnimations();
         }
-        return Column(
-          children: [
-            Expanded(
-              child: CustomScrollView(
-                slivers: [
-                  if (state is CommentResponceState) ...{
-                    state.getComment.fold(
-                      (error) => SliverToBoxAdapter(
-                        child: Text(error),
-                      ),
-                      (comment) => SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                            if (comment.isEmpty) {
-                              const SliverToBoxAdapter(
-                                child: Center(
-                                  child: Text(
-                                    'برای این محصل هیچ دیدکاهی ثبت نشده هست',
-                                    style: TextStyle(fontFamily: 'sm'),
-                                  ),
-                                ),
-                              );
-                            }
-                            return Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          (comment[index].username.isEmpty)
-                                              ? 'کاربر'
-                                              : comment[index].username,
-                                          textAlign: TextAlign.end,
-                                          style: const TextStyle(
-                                            fontFamily: 'sm',
-                                          ),
-                                        ),
-                                        Text(
-                                          comment[index].text.isEmpty
-                                              ? 'خطا در نمایش کامنت'
-                                              : comment[index].text,
-                                          textAlign: TextAlign.end,
-                                          style: const TextStyle(
-                                            fontFamily: 'sm',
-                                          ),
-                                        ),
-                                      ],
+        return Scaffold(
+          body: Column(
+            children: [
+              Expanded(
+                child: CustomScrollView(
+                  slivers: [
+                    if (state is CommentResponceState) ...{
+                      state.getComment.fold(
+                        (error) => SliverToBoxAdapter(
+                          child: Text(error),
+                        ),
+                        (comment) => SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                              if (comment.isEmpty) {
+                                const SliverToBoxAdapter(
+                                  child: Center(
+                                    child: Text(
+                                      'برای این محصل هیچ دیدکاهی ثبت نشده هست',
+                                      style: TextStyle(fontFamily: 'sm'),
                                     ),
                                   ),
-                                  const SizedBox(
-                                    width: 8,
-                                  ),
-                                  SizedBox(
-                                    height: 50,
-                                    width: 50,
-                                    child: (comment[index].avatar.isNotEmpty)
-                                        ? CachedImage(
-                                            imageUrl:
-                                                comment[index].userThumbnailUrl,
-                                          )
-                                        : Image.asset(
-                                            'assets/images/avatar.png'),
-                                  )
-                                ],
-                              ),
-                            );
-                          },
-                          childCount: comment.length,
+                                );
+                              }
+                              return Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            (comment[index].username.isEmpty)
+                                                ? 'کاربر'
+                                                : comment[index].username,
+                                            textAlign: TextAlign.end,
+                                            style: const TextStyle(
+                                              fontFamily: 'sm',
+                                            ),
+                                          ),
+                                          Text(
+                                            comment[index].text.isEmpty
+                                                ? 'خطا در نمایش کامنت'
+                                                : comment[index].text,
+                                            textAlign: TextAlign.end,
+                                            style: const TextStyle(
+                                              fontFamily: 'sm',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 8,
+                                    ),
+                                    SizedBox(
+                                      height: 50,
+                                      width: 50,
+                                      child: (comment[index].avatar.isNotEmpty)
+                                          ? CachedImage(
+                                              imageUrl: comment[index]
+                                                  .userThumbnailUrl,
+                                            )
+                                          : Image.asset(
+                                              'assets/images/avatar.png'),
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
+                            childCount: comment.length,
+                          ),
                         ),
+                      )
+                    }
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: TextField(
+                        controller: textController,
+                        decoration: InputDecoration(
+                          label: const Text('تبت کامنت'),
+                          labelStyle: const TextStyle(
+                              fontFamily: 'Sm',
+                              fontSize: 13,
+                              color: Colors.black),
+                          focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(
+                            color: CustomColors.mainColor,
+                          )),
+                          contentPadding: const EdgeInsets.all(12),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: const BorderSide(width: 1),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          textStyle: const TextStyle(fontFamily: 'sm'),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        onPressed: () {
+                          if (textController.text.isEmpty) {
+                            return CherryToast.error(
+                              layout: ToastLayout.rtl,
+                              title: const Text(
+                                'لطفا کامنت خود را وارد کنید!',
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                    color: Colors.black, fontFamily: 'sm'),
+                              ),
+                            ).show(context);
+                          }
+                          context.read<CommentBloc>().add(CoometPostEvent(
+                                productId,
+                                textController.text,
+                              ));
+                          print(textController.text);
+                        },
+                        child: const Text('ثبت نظر '),
                       ),
                     )
-                  }
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: TextField(
-                      controller: textController,
-                      decoration: InputDecoration(
-                        label: const Text('تبت کامنت'),
-                        labelStyle: const TextStyle(
-                            fontFamily: 'Sm',
-                            fontSize: 13,
-                            color: Colors.black),
-                        focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                          color: CustomColors.mainColor,
-                        )),
-                        contentPadding: const EdgeInsets.all(12),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          borderSide: const BorderSide(width: 1),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        textStyle: const TextStyle(fontFamily: 'sm'),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      onPressed: () {
-                        if (textController.text.isEmpty) {
-                          return CherryToast.error(
-                            layout: ToastLayout.rtl,
-                            title: const Text(
-                              'لطفا کامنت خود را وارد کنید!',
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                  color: Colors.black, fontFamily: 'sm'),
-                            ),
-                          ).show(context);
-                        }
-                        context.read<CommentBloc>().add(CoometPostEvent(
-                              productId,
-                              textController.text,
-                            ));
-                        print(textController.text);
-                      },
-                      child: const Text('ثبت نظر '),
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
+                  ],
+                ),
+              )
+            ],
+          ),
         );
       },
     );

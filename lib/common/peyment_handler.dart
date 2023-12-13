@@ -5,7 +5,7 @@ import 'package:zarinpal/zarinpal.dart';
 
 abstract class PaymentHandler {
   //for init peyment
-  Future<void> initPaymentRequest();
+  Future<void> initPaymentRequest(int finalPrice);
   // for send peyment
   Future<void> sendPaymentRequest();
   //  for verifyPaymentRequest peyment
@@ -20,9 +20,9 @@ class ZarinpalPaymentHandler extends PaymentHandler {
   ZarinpalPaymentHandler(this.urlHandler);
 
   @override
-  Future<void> initPaymentRequest() async {
+  Future<void> initPaymentRequest(int finalPrice) async {
     _paymentRequest.setIsSandBox(true);
-    _paymentRequest.setAmount(1000);
+    _paymentRequest.setAmount(finalPrice);
     _paymentRequest.setDescription('this is for test application apple shop');
     _paymentRequest.setMerchantID('d645fba8-1b29-11ea-be59-000c295eb8fc');
     _paymentRequest.setCallbackURL('alireza://shahab');
@@ -54,6 +54,7 @@ class ZarinpalPaymentHandler extends PaymentHandler {
       (isPaymentSuccess, refID, paymentRequest) {
         if (isPaymentSuccess) {
           print(refID);
+          print('مرسی از خریدت');
         } else {
           print('error');
         }
@@ -62,13 +63,13 @@ class ZarinpalPaymentHandler extends PaymentHandler {
   }
 }
 
-class PaypalPaymentHandler extends PaymentHandler {
-  @override
-  Future<void> initPaymentRequest() async {}
+// class PaypalPaymentHandler extends PaymentHandler {
+//   @override
+//   Future<void> initPaymentRequest() async {}
 
-  @override
-  Future<void> sendPaymentRequest() async {}
+//   @override
+//   Future<void> sendPaymentRequest() async {}
 
-  @override
-  Future<void> verifyPaymentRequest() async {}
-}
+//   @override
+//   Future<void> verifyPaymentRequest() async {}
+// }

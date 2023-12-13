@@ -26,8 +26,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
     /// this event for ZarinPal
     on<BasketPeymentInitEvent>(
-      (event, emit) {
-        _paymentHandler.initPaymentRequest();
+      (event, emit) async {
+        var finalPrice = await _basketrepositroy.getBasketFinalPrice();
+        _paymentHandler.initPaymentRequest(finalPrice);
       },
     );
 
@@ -38,5 +39,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         _paymentHandler.verifyPaymentRequest();
       },
     );
+    on<BaskeRemoveEvent>((event, emit) async {
+      _basketrepositroy.removeProduct(event.index);
+      var repsonce = await _basketrepositroy.getAllBasketItem();
+      var finalPrice = await _basketrepositroy.getBasketFinalPrice();
+      emit(
+        CartFeatchHiveState(repsonce, finalPrice),
+      );
+    });
   }
 }
