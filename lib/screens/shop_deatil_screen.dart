@@ -182,53 +182,7 @@ class ProductDetailScreen extends StatelessWidget {
                       ),
                     ),
                     //=======================================>>>>>> About Products
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 44, vertical: 15),
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 46,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1,
-                              color: CustomColors.mainTextcolor,
-                            ),
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Row(
-                              children: [
-                                const Text(
-                                  'توضیحات محصول',
-                                  style: TextStyle(
-                                    fontFamily: 'Sb',
-                                    fontSize: 12,
-                                  ),
-                                ),
-                                const Spacer(),
-                                const Text(
-                                  'مشاهده',
-                                  style: TextStyle(
-                                    fontFamily: 'Sb',
-                                    fontSize: 14,
-                                    color: CustomColors.mainColor,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Image.asset(
-                                    'assets/images/icon_left_categroy.png'),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    ProductDescription(description: productModel.description),
                     //=======================================>>>>>>  Users Comments
                     SliverToBoxAdapter(
                       child: Padding(
@@ -351,6 +305,108 @@ class ProductDetailScreen extends StatelessWidget {
               ),
             );
           },
+        ),
+      ),
+    );
+  }
+}
+
+/// this class for Product Description
+class ProductDescription extends StatefulWidget {
+  final String description;
+  const ProductDescription({
+    super.key,
+    required this.description,
+  });
+
+  @override
+  State<ProductDescription> createState() => _ProductDescriptionState();
+}
+
+class _ProductDescriptionState extends State<ProductDescription> {
+  bool isVisiblity = false;
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 44, vertical: 15),
+        child: Column(
+          children: [
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  isVisiblity = !isVisiblity;
+                });
+              },
+              child: AnimatedContainer(
+                duration: const Duration(seconds: 2),
+                alignment: Alignment.center,
+                height: 46,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 1,
+                    color: CustomColors.mainTextcolor,
+                  ),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: [
+                      const Text(
+                        'توضیحات محصول',
+                        style: TextStyle(
+                          fontFamily: 'Sb',
+                          fontSize: 12,
+                        ),
+                      ),
+                      const Spacer(),
+                      const Text(
+                        'مشاهده',
+                        style: TextStyle(
+                          fontFamily: 'Sb',
+                          fontSize: 14,
+                          color: CustomColors.mainColor,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Image.asset('assets/images/icon_left_categroy.png'),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Visibility(
+              visible: isVisiblity,
+              child: AnimatedContainer(
+                duration: const Duration(seconds: 2),
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(10),
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 1,
+                    color: CustomColors.mainTextcolor,
+                  ),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Text(
+                  widget.description,
+                  style: const TextStyle(
+                    fontFamily: 'Sm',
+                    fontSize: 14,
+                    height: 1.5,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
