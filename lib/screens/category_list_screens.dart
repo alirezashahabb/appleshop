@@ -1,8 +1,10 @@
 import 'package:appleshop1/common/color.dart';
+import 'package:appleshop1/data/model/category_model.dart';
 import 'package:flutter/material.dart';
 
 class CategoryListScreens extends StatelessWidget {
-  const CategoryListScreens({super.key});
+  final CategoryModel categoryModel;
+  const CategoryListScreens({super.key, required this.categoryModel});
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +28,11 @@ class CategoryListScreens extends StatelessWidget {
                       width: 16,
                     ),
                     Image.asset('assets/images/icon_apple_blue.png'),
-                    const Expanded(
+                    Expanded(
                       child: Text(
-                        'پر فروش ترین ها',
+                        categoryModel.title,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontFamily: 'Sb',
                           color: CustomColors.mainColor,
                           fontSize: 16,

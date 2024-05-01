@@ -1,6 +1,6 @@
 import 'package:appleshop1/common/color.dart';
 import 'package:appleshop1/di/di.dart';
-import 'package:appleshop1/screens/root_screens.dart';
+import 'package:appleshop1/test_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
         fontFamily: 'SM',
         scaffoldBackgroundColor: CustomColors.scaffoldColor,
       ),
-      home: const RootScreens(),
+      home: const TestScreen(),
     );
   }
 }
