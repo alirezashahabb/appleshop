@@ -1,6 +1,7 @@
 import 'package:appleshop1/data/model/category_model.dart';
 import 'package:appleshop1/data/model/galley_model.dart';
 import 'package:appleshop1/data/model/product_varaint_model.dart';
+import 'package:appleshop1/data/model/propert_model.dart';
 import 'package:appleshop1/data/repositroy/product_detail_repositroy.dart';
 import 'package:appleshop1/di/di.dart';
 import 'package:bloc/bloc.dart';
@@ -20,14 +21,19 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
           final gallery = await _detailRepository.getGallery(event.productId);
           final productVariant =
               await _detailRepository.getProductVariant(event.productId);
-          final productCategroy =
+          final productCategory =
               await _detailRepository.getProductCategory(event.categoryId);
+
+          final productProperty =
+              await _detailRepository.getProperty(event.productId);
 
           emit(
             ProductResponseState(
-                productGallery: gallery,
-                productVariant: productVariant,
-                productCategory: productCategroy),
+              productGallery: gallery,
+              productVariant: productVariant,
+              productCategory: productCategory,
+              productProperty: productProperty,
+            ),
           );
         }
       },

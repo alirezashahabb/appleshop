@@ -15,12 +15,20 @@ class ProductResponseState extends ProductState {
   final Either<String, List<GalleryModel>> productGallery;
   final Either<String, List<ProductVariantModel>> productVariant;
   final Either<String, CategoryModel> productCategory;
+  final Either<String, List<PropertyModel>> productProperty;
 
-  const ProductResponseState(
-      {required this.productGallery,
-      required this.productVariant,
-      required this.productCategory});
+  const ProductResponseState({
+    required this.productGallery,
+    required this.productVariant,
+    required this.productCategory,
+    required this.productProperty,
+  });
 
   @override
-  List<Object> get props => [productGallery, productVariant, productCategory];
+  List<Object> get props => [
+        productGallery,
+        productVariant,
+        productCategory,
+        productProperty,
+      ];
 }

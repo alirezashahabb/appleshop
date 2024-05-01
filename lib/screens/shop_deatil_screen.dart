@@ -6,6 +6,7 @@ import 'package:appleshop1/common/image_loading_service.dart';
 import 'package:appleshop1/data/model/galley_model.dart';
 import 'package:appleshop1/data/model/product_model.dart';
 import 'package:appleshop1/data/model/product_varaint_model.dart';
+import 'package:appleshop1/data/model/propert_model.dart';
 import 'package:appleshop1/data/model/varaint.dart';
 import 'package:appleshop1/data/model/variant_type.dart';
 import 'package:flutter/material.dart';
@@ -122,64 +123,19 @@ class ProductDetailScreen extends StatelessWidget {
                             variantList: variantList);
                       },
                     ),
-                    //==================================================================Choose Storage Variant
-                    // state.productVariant.fold(
-                    //   (error) {
-                    //     return SliverToBoxAdapter(
-                    //       child: Text(error),
-                    //     );
-                    //   },
-                    //   (variantList) {
-                    //     return StorageVariant(variantList: variantList);
-                    //   },
-                    // ),
+
                     //=======================================>>>>>> Technical Specifications
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 44, vertical: 15),
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 46,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1,
-                              color: CustomColors.mainTextcolor,
-                            ),
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Row(
-                              children: [
-                                const Text(
-                                  'مشخصات فنی',
-                                  style: TextStyle(
-                                    fontFamily: 'Sb',
-                                    fontSize: 12,
-                                  ),
-                                ),
-                                const Spacer(),
-                                const Text(
-                                  'مشاهده',
-                                  style: TextStyle(
-                                    fontFamily: 'Sb',
-                                    fontSize: 14,
-                                    color: CustomColors.mainColor,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Image.asset(
-                                    'assets/images/icon_left_categroy.png'),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                    state.productProperty.fold(
+                      (error) {
+                        return SliverToBoxAdapter(
+                          child: Text(error),
+                        );
+                      },
+                      (propertyList) {
+                        return TechnicalProduct(
+                          property: propertyList,
+                        );
+                      },
                     ),
                     //=======================================>>>>>> About Products
                     ProductDescription(description: productModel.description),
@@ -305,6 +261,113 @@ class ProductDetailScreen extends StatelessWidget {
               ),
             );
           },
+        ),
+      ),
+    );
+  }
+}
+
+/// this class  for Technical Specifications products
+class TechnicalProduct extends StatefulWidget {
+  final List<PropertyModel> property;
+  const TechnicalProduct({
+    super.key,
+    required this.property,
+  });
+
+  @override
+  State<TechnicalProduct> createState() => _TechnicalProductState();
+}
+
+class _TechnicalProductState extends State<TechnicalProduct> {
+  bool isVisiblity = false;
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 44, vertical: 15),
+        child: GestureDetector(
+          onTap: () {
+            setState(() {
+              isVisiblity = !isVisiblity;
+            });
+          },
+          child: Column(
+            children: [
+              Container(
+                alignment: Alignment.center,
+                height: 46,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 1,
+                    color: CustomColors.mainTextcolor,
+                  ),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: [
+                      const Text(
+                        'مشخصات فنی',
+                        style: TextStyle(
+                          fontFamily: 'Sb',
+                          fontSize: 12,
+                        ),
+                      ),
+                      const Spacer(),
+                      const Text(
+                        'مشاهده',
+                        style: TextStyle(
+                          fontFamily: 'Sb',
+                          fontSize: 14,
+                          color: CustomColors.mainColor,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Image.asset('assets/images/icon_left_categroy.png'),
+                    ],
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: isVisiblity,
+                child: Container(
+                  margin: const EdgeInsets.only(top: 8),
+                  padding: const EdgeInsets.all(12),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 1,
+                      color: CustomColors.mainTextcolor,
+                    ),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: widget.property.isNotEmpty
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: widget.property.length,
+                          itemBuilder: (context, index) {
+                            var propert = widget.property[index];
+                            return Row(
+                              children: [
+                                Flexible(
+                                    child: Text(
+                                        '${propert.title} : ${propert.value} ')),
+                              ],
+                            );
+                          },
+                        )
+                      : const Text('برای این محصول هیج مشخصه ای ثبت  نشده'),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
